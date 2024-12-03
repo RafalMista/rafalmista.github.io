@@ -15,8 +15,22 @@
 <body>
 Laureaci Nagrody Kolberga
 <br>
+<select id="wybor_kategorii">
+    <option>Wszystkie kategorie</option>
+    <option>Twórczość plastyczna, zdobnictwo, rękodzieło i rzemiosło ludowe, folklor muzyczno-taneczny</option>
+    <option>Mistrz tradycji</option>
+    <option>Pisarstwo ludowe</option>
+    <option>Działalność naukowa, dokumentacyjna, animacja i upowszechnianie kultury ludowej</option>
+    <option>Kapele ludowe</option>
+    <option>Zespoły folklorystyczne</option>
+    <option>Wyróżnienia honorowe dla instytucji i organizacji społecznych zasłużonych w opiece i upowszechnianiu kultury ludowej</option>
+</select>
+
+<button type="button" onclick="funkcja()">Wybrana kategoria</button>
+
 <div id="map"></div>
 <script>
+    
     var map = L.map('map').setView([52.114503, 19.423561], 6);
    
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -25,9 +39,23 @@ Laureaci Nagrody Kolberga
 
     var points = L.geoJSON(laureaci,{onEachFeature: function(feature,layer) 
         {layer.bindPopup('<a href="'+ feature.properties.www + '">' + feature.properties.laureat + ' ' + feature.properties.rok + '</a>')}});
-    
-    var markers = L.markerClusterGroup();
+    var markers = L.markerClusterGroup({maxClusterRadius: 1, singleMarkerMode: true});
     markers.addLayer(points).addTo(map);
+
+
+    function wybor_kategorii(feature) {
+            var wybor = document.getElementById("wybor_kategorii").value;
+            if ((feature.properties.kategoria == wybor) || (wybor === "Wszystkie kategorie")) return true
+        };
+
+    function funkcja() {
+        map.removeLayer(markers);
+        points = L.geoJSON(laureaci, {filter: wybor_kategorii, onEachFeature: function(feature,layer) 
+            {layer.bindPopup('<a href="'+ feature.properties.www + '">' + feature.properties.laureat + ' ' + feature.properties.rok + '</a>')}});
+        markers = L.markerClusterGroup({maxClusterRadius: 1, singleMarkerMode: true});
+        markers.addLayer(points).addTo(map);
+    };
+   
 
 </script>
 
