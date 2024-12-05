@@ -3,8 +3,16 @@
 <head>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
+    <script src="atlas_Moszynski.geojson"></script>
 <style>
     #map {height: 720px;}
+    .legend {
+        background-color: white;
+        line-height: 30px;
+        padding-left: 5px;
+        padding-right: 10px;
+        font-size: 15px;
+    }
 </style>
 </head>
 
@@ -14,156 +22,39 @@
     <div id="map"></div>
     <script>
         var map = L.map('map').setView([52.114503, 19.423561], 6);
-       
+
+        var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
+        var znacznik2 = L.icon({iconUrl: 'znacznik2.png', iconSize: [20,20]}); 
+        var znacznik3 = L.icon({iconUrl: 'znacznik3.png', iconSize: [20,20]}); 
+        var znacznik4 = L.icon({iconUrl: 'znacznik4.png', iconSize: [20,20]}); 
+        var znacznik5 = L.icon({iconUrl: 'znacznik5.png', iconSize: [20,20]}); 
+
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
     
-        var wykaz = [
-['1','Karwia (Wejherowo)',54.828628654904776,18.211530716495737],
-['2','Niesiołowice (Kartuzy)',54.204756940447616,17.850341520665253],
-['3','Brzeźno (Starogard)',53.99081643789401,18.64684876668268],
-['4','Gaczna Mł. (Tuchola)',53.6055605183612,18.104929993794176],
-['5','Słup (Grudziądz)',53.465599878999576,19.027490398344803],
-['6','Morzewo (Chodzież)',53.08062808061047,16.89299418654595],
-['7','Strzelewo (Bydgoszcz)',53.16699748594554,17.776507277825385],
-['8','Krobia (Lipno)',53.03765102702538,18.783448066269102],
-['9','Kopaniarze (Działdowo, dawn. N. Miasto)',53.34823405473562,19.906560188733646],
-['10','Szczutowo (Rypin)',52.93850092069904,19.57654847299111],
-['11','Bobulczyn (Szamotuły)',52.66888283032939,16.396611964877263],
-['12','Iwno (Środa)',52.40510323894402,17.274726820143666],
-['13','Łąkie (Mogilno, dawn. Strzelno)',52.61206962887105,18.12882457475932],
-['14','Brenno (Leszno)',51.92472216053172,16.21261636320902],
-['15','Gogolewo (Gostyń)',51.72119809848195,17.02346343845968],
-['16','Dębniałki (Kalisz)',51.80117520453616,18.036624612721166],
-['17','Bralin (Kępno)',51.28611679968654,17.902030852482927],
-['18','Ożupowice (Rybnik)',50.120004839673236,18.51983631611534],
-['19','Cisie (Częstochowa)',50.781852132231855,18.90779184136642],
-['20','Chociw (Łask)',51.39325529099676,19.00218525697404],
-['21','Wólka (Łęczyca)',51.98467514669498,19.032136195733035],
-['22','Kłóbka (Włocławek)',52.45282315200745,19.12945377040963],
-['23','Krzynowłoga Wk. (Przasnysz)',53.21231372741088,20.849064797280036],
-['24','Kozłówka (Pułtusk)',52.74114361919193,20.958653831267732],
-['25','Wilkanowo (Płock)',52.468254243192554,20.13427298797809],
-['26','Łyszkowice (Łowicz)',51.98602959822872,19.90863377389392],
-['27','Golesze (Piotrków)',51.46502824016704,19.89021072610409],
-['28','Grodzisko (Radomsko)',50.85425904979997,19.71482011724008],
-['29','Chechło (Olkusz)',50.36680934586677,19.51047062849814],
-['30','Sułkowice (Wadowice)',49.830406180379136,19.36036613476811],
-['31','Ujsoły (Żywiec)',49.478956351196025,19.14386454870066],
-['31a','Glinka (Żywiec)',49.46201414155527,19.16712038670572],
-['32','St. Bystre (N. Targ)',49.42332274390797,19.912741735615516],
-['33','Kłaj (Bochnia)',49.991265485070954,20.315000281537163],
-['34','Umianowice (Pińczów)',50.57392744136854,20.524064648108105],
-['34a','Kliszów (Pińczów)',50.61642701979491,20.52189797650731],
-['35','Bliżyn (Końskie)',51.10773546975673,20.76096943092735],
-['36','Radzanów (Radom)',51.55774832543599,20.863949227410707],
-['37','St. Sękocin (Warszawa)',52.109738071510186,20.883409894391573],
-['38','Królowa Ruska (N. Sącz, dawn. Grybów)',49.58535652635842,20.843403592263353],
-['39','Borowa (Ropczyce, dawn. Pilzno)',50.08630503615964,21.286266552744113],
-['40','Krępa (Opatów)',50.73058675786642,21.346332883099677],
-['41','Lucimia (Kozienice)',51.27509496703221,21.82035362401231],
-['42','Dwornia (Łuków)',51.82670043713789,21.95614644259025],
-['43','Makowiec Duży (Mińsk Mazowiecki)',52.34485875574783,21.738814572213137],
-['44','Jelenie (Ostrów Mazowiecka)',52.87100405977333,21.816042237083554],
-['45','Czerwone (Łomża, dawn. Kolno)',53.42376462759833,21.889534693088976],
-['46','Kroszewo (Grajewo)',53.72339675365748,22.790689286539237],
-['47','Barszczewo (Białystok)',53.12550751142568,23.01497552908597],
-['48','Skiwy Wk. (Bielsk Podlaski)',52.481843719749065,22.76622166135309],
-['49','Żerocin (Radzyń)',51.95066120744531,22.907400414171036],
-['50','Spiczyn (Lubartów)',51.33620945788121,22.770277755419926],
-['51','Zakrzew (Krasnystaw)',50.89055333216198,22.58388774827948],
-['52','Mołodycz (Jarosław)',50.15333995095199,22.813446530079545],
-['53','Cisowa (Przemyśl)',49.71310196420544,22.577234456504055],
-['54','Sójkowa (Nisko)',50.3999431963349,22.04462322876802],
-['55','Wisłok Wk. (Sanok)',49.409783958158364,21.980877188983307],
-['56','Jabłonka Niż. (Turka)',49.11661996627942,22.95768139111408],
-['57','Hołodówka (Rudki)',49.59300879154236,23.599450963935976],
-['58','Monasterek (Rawa Ruska)',50.16124575090203,23.62836385690626],
-['59','Jarosławiec (Hrubieszów)',50.90533045334119,23.70738065171672],
-['60','Świtaź (Luboml)',51.485911370510415,23.85675531166083],
-['61','Pożeżyn (Brześć n. B.)',51.94330724447705,23.97171875790661],
-['61a','St. Romatowo (Brześć n. B.)',51.89517384899165,23.971331461772554],
-['62','Dworce (Prużana)',52.450443284479285,23.971789506514344],
-['63','Prokopowicze (Grodno)',53.65237765236882,23.676404282712067],
-['64','Giby (Suwałki)',54.03893092104168,23.357422826118015],
-['65','Berszty (Grodno)',53.85994488944994,24.396331525182067],
-['66','Darguże (Wilno)',54.3835590888332,24.882517276380717],
-['67','Żukańce (Wilno)',54.898449400944486,25.617289082337635],
-['68','zaść. Piniginis-Kaunas (Święciany)',55.13599035189929,26.026443438922783],
-['69','Ozierawce (Brasław)',55.60404258945968,27.12540811409066],
-['70','Świła (Głębokie)',55.17098002828588,27.95790036448435],
-['71','Czerniaty (Postawy)',54.99860910505945,26.88413226873909],
-['72','Wiazyń (Wilejka)',54.42126971151331,27.16195160362488],
-['73','Iwaszkowce (Oszmiana)',54.50639907675559,26.165718074087064],
-['74','Sudrogi (Lida)',53.973535592133906,25.653156675370575],
-['75','Denisy (Wołożyn)',53.81722288386787,26.712997595768595],
-['76','Jachnowszczyzna (Słonim)',53.361957299088495,25.463034667683097],
-['77','Jatwieź (Baranowicze)',53.162561847254295,26.30195750399228],
-['78','Dubicze (Wołkowysk)',52.97663004221967,24.623834540600058],
-['79','Chodaki (Kossów Poleski)',52.585140795819036,25.38152998830554],
-['80','Malkowicze (Łuniniec)',52.53444088920185,26.59698581036978],
-['81','Hołowczyce (Kobryń)',52.14870499851822,24.866393417181598],
-['82','Wielatycze (Pińsk)',52.02603071819963,26.15152092960871],
-['83','Sienkiewicze (Łuniniec)',52.21592188935483,27.255342266998984],
-['84','Nujno (Kamień Koszyrski)',51.54303913540342,24.9092850057115],
-['85','Chinocz (Sarny)',51.57710389346292,26.142067005936063],
-['86','St. Sioło (Stolin)',51.61216536397737,27.12920725019953],
-['87','Tuliczew (Kowel)',51.00430353414162,24.658830206842],
-['87a','Radowicze (Kowel)',51.03479522991108,24.6299145983072],
-['88','Silno (Łuck)',50.904887968613174,25.790977494909722],
-['89','Sieliszcze Mł. (Sarny)',51.198331040353516,26.894166332903698],
-['90','Tesów (Zdołbunów)',50.50754649621124,26.639296998452085],
-['91','Milcza Mł. (Dubno)',50.35514630810152,25.551470096847336],
-['91a','Zahorce Mł. (Dubno)',50.36465530906268,25.66658620029506],
-['92','Brany (Horochów)',50.41171719727667,24.747003643643538],
-['93','Skniłów (Złoczów)',49.868909695035406,24.637473573383087],
-['94','Łubianki Niż. (Zbaraż)',49.67145047197696,25.837013197058447],
-['95','Uhryń (Czortków)',48.96853862342699,25.84001714555143],
-['96','Chochoniów (Rohatyn)',49.2237432019091,24.862689449360477],
-['97','Iłemnia (Dolina)',48.85398222797672,23.969079266989716],
-['98','Tekucza (Kołomyja)',48.38867919310031,24.80647670507194],
-['99','Kosmacz (Kołomyja)',48.33084502533208,24.816720756427742],
-['100','Dora (Nadwórna)',48.4759297947241,24.584267810163194],
-['101','Olchowiec (Borszczów)',48.56019768436837,26.14872479124328],
-['102','Michałówka (Borszczów)',48.60886227223696,26.256567105178583],
-['103','m. Trembowla',49.29939951885895,25.68740643088901],
-['104','zaść. Wołok (Postawy)',54.90947348178195,26.873540767367423],
-['105','Glina (Ostrów Mazowiecka)',52.692128449561885,21.956171981324037],
-['106','Białobrzeg (Ostrołęka)',52.85919718092071,21.449956965024754],
-['107','Rynek (Działdowo, dawn. N. Miasto)',53.36468689544842,19.79605283584485],
-['108','Krasna (Krosno)',49.78031812389868,21.854392749742793],
-['109','Chomranice (N. Sącz)',49.67688260591518,20.58992448358297],
-['110','Istebna (Cieszyn)',49.56396925235909,18.893470078042725],
-['111','Raciborz-Płonia (Raciborz w Niemczech)',50.0851300140695,18.232912502765462],
-['112','Łyski (Rybnik)',50.11836756744028,18.38775844739829],
-['113','Wilcza Grn. (Rybnik)',50.18836574533674,18.596582718016318],
-['114','Piekary Wk. (Świętochłowice)',50.38218461607742,18.946369061239906],
-['115','Lubockie (Lubliniec)',50.727046064256236,18.735663502151368],
-['116','Pieniaki (Brody)',49.898106913361154,25.189078283704937],
-['117','Płaucza Wk. (Brzeżany)',49.59360597695963,25.222068125865494],
-['118','Jezierna (Zborów)',49.63151213983242,25.330404988119845],
-['119','Zakopane (N. Targ)',49.296808166233916,19.94844580408629],
-['120','Dobra (Limanowa)',49.71541701340327,20.245232947315092],
-['121','Krzyworzeka (Myślenice, dawn. Wieliczka)',49.866382427887906,20.141473596748412],
-['122','Połom Duży (Bochnia)',49.88038149427228,20.458667952727613],
-['123','Wola Przemykowska (Brzesko)',50.18040264266272,20.67503414521365],
-['124','Żary (Chrzanów)',50.172472100233996,19.693717101826557],
-['125','Krzyszkowice (Myślenice)',49.884021703299695,19.924937360747073],
-['126','Ponikiew (Wadowice)',49.8318285185739,19.457689901422395],
-['127','Zawoja (Wadowice, dawn. Maków)',49.66092514123984,19.560266012625856],
-['128','Naklik (Biłgoraj)',50.37102610924735,22.472565924143556],
-['129','Pużycze albo Puzicze (Łuniniec)',52.52924873650949,27.25195340698195],
-['130','Moszczenica (Gorlice)',49.72745427385318,21.102578990367437],
-['131','Podwilk (N. Targ)',49.54823074214946,19.740245820014568],
-['132','Jabłonka Orawska (N. Targ)',49.485099013630496,19.701848470582366],
-['133','Sopotnia Mł. (Żywiec)',49.614902045501076,19.275566843392465],
-['134','Bukowiec (Cieszyn w Czechosłowacji)',49.54963839944008,18.82972796740732]
-    ];
+        var points = L.geoJSON(atlas,{onEachFeature: function(feature,layer) 
+            {layer.bindPopup(feature.properties.ID + ' ' + feature.properties.Nazwa);
+                if (feature.properties.a1m0 == "wyznaczony 1 odp") return layer.setIcon(znacznik1);
+                if (feature.properties.a1m0 == "wyznaczony 2 odp") return layer.setIcon(znacznik3);
+                if (feature.properties.a1m0 == "nadprogramowy 1 odp") return layer.setIcon(znacznik2);
+                if (feature.properties.a1m0 == "nadprogramowy 2 odp") return layer.setIcon(znacznik4);
+                if (feature.properties.a1m0 == "nadprogramowy niew") return layer.setIcon(znacznik5);
+            }});
+            
+        var legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'), 
+                kategorie = ["1 odpowiedź z wyznaczonego punktu", "2 odpowiedzi z wyznaczonego punktu", "1 odpowiedź z nadprogramowego punktu", "2 odpowiedzi z nadprogramowego punktu", "niewyczerpująca odpowiedź z nadprogramowego punktu"], 
+                labels = ["znacznik1.png","znacznik3.png","znacznik2.png","znacznik4.png","znacznik5.png"];
+            for (var i = 0; i < kategorie.length; i++) {
+                div.innerHTML += (" <img src="+ labels[i] +" height='20' width='20'>") + " " + kategorie[i] +'<br>';
+            }
+            return div;
+        };
+        legend.addTo(map);
 
-    for (var i = 0; i < wykaz.length; i++) {
-			marker = new L.marker([wykaz[i][2],wykaz[i][3]]).bindPopup(wykaz[i][0]+" "+wykaz[i][1]).addTo(map);
-		}
+        map.addLayer(points);
     
     </script>
     
