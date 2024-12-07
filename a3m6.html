@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
+    <script src="atlas_Moszynski.geojson"></script>
+<style>
+    #map {height: 720px;}
+    .legend {
+        background-color: white;
+        line-height: 30px;
+        padding-left: 5px;
+        padding-right: 10px;
+        font-size: 15px;
+    }
+</style>
+</head>
+
+<body>
+    Człowiek zabity przez piorun
+    <br>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([52.114503, 19.423561], 6);
+
+        var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
+        var znacznik2 = L.icon({iconUrl: 'znacznik2.png', iconSize: [20,20]});
+        var znacznik7 = L.icon({iconUrl: 'znacznik7.png', iconSize: [20,20]}); 
+        var znacznik8 = L.icon({iconUrl: 'znacznik8.png', iconSize: [20,20]}); 
+        var znacznik21 = L.icon({iconUrl: 'znacznik21.png', iconSize: [20,20]});
+        var znacznik23 = L.icon({iconUrl: 'znacznik23.png', iconSize: [20,20]});
+        var znacznik26 = L.icon({iconUrl: 'znacznik26.png', iconSize: [20,20]});
+        var znacznik27 = L.icon({iconUrl: 'znacznik27.png', iconSize: [20,20]});
+        var znacznik28 = L.icon({iconUrl: 'znacznik28.png', iconSize: [20,20]});
+        var znacznik29 = L.icon({iconUrl: 'znacznik29.png', iconSize: [20,20]});
+        var znacznik30 = L.icon({iconUrl: 'znacznik30.png', iconSize: [20,20]});
+        var znacznik31 = L.icon({iconUrl: 'znacznik31.png', iconSize: [20,20]});
+        var znacznik32 = L.icon({iconUrl: 'znacznik32.png', iconSize: [20,20]});
+        var znacznik33 = L.icon({iconUrl: 'znacznik33.png', iconSize: [20,20]});
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        var points = L.geoJSON(atlas,{onEachFeature: function(feature,layer) 
+            {layer.bindPopup(feature.properties.ID + ' ' + feature.properties.Nazwa);
+                if (feature.properties.a3m6 == "jest szczęśliwy; jest szcześliwy, bo go Bóg zabił, zabrał itp.") return layer.setIcon(znacznik1);
+                if (feature.properties.a3m6 == 'jest "sprawiedliwy", "niewinny"') return layer.setIcon(znacznik21);
+                if (feature.properties.a3m6 == 'jest grzeszny, nieszczęśliwy, bezbożny') return layer.setIcon(znacznik2);
+                if (feature.properties.a3m6 == 'pierwsza i trzecia wersja obok siebie') return layer.setIcon(znacznik26);
+                if (feature.properties.a3m6 == 'druga i trzecia wersja obok siebie') return layer.setIcon(znacznik27);
+                if (feature.properties.a3m6 == 'piorun zabija ciało i duszę') return layer.setIcon(znacznik23);
+                if (feature.properties.a3m6 == 'brak odpowiedzi lub odpowiedź niejasna') return layer.setIcon(znacznik7);
+                if (feature.properties.a3m6 == 'jest grzeszny, nieszczęśliwy, bezbożny; piorun zabija ciało i duszę') return layer.setIcon(znacznik28);
+                if (feature.properties.a3m6 == 'pierwsza i trzecia wersja obok siebie; piorun zabija ciało i duszę') return layer.setIcon(znacznik29);
+                if (feature.properties.a3m6 == 'jest szczęśliwy; jest szcześliwy, bo go Bóg zabił, zabrał itp.?') return layer.setIcon(znacznik30);
+                if (feature.properties.a3m6 == 'jest grzeszny, nieszczęśliwy, bezbożny?') return layer.setIcon(znacznik31);
+                if (feature.properties.a3m6 == 'jest grzeszny, nieszczęśliwy, bezbożny?; piorun zabija ciało i duszę') return layer.setIcon(znacznik32);
+                if (feature.properties.a3m6 == 'jest szczęśliwy; jest szcześliwy, bo go Bóg zabił, zabrał itp.; jest "sprawiedliwy", "niewinny"') return layer.setIcon(znacznik33);
+                if (feature.properties.a3m6 == null) return layer.setIcon(znacznik8);
+            }});
+            
+        var legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'), 
+                kategorie = ["jest szczęśliwy; jest szcześliwy, bo go Bóg zabił, zabrał itp.", 'jest "sprawiedliwy", "niewinny"', 'jest grzeszny, nieszczęśliwy, bezbożny', 'pierwsza i trzecia wersja obok siebie', "druga i trzecia wersja obok siebie", "piorun zabija ciało i duszę", "brak odpowiedzi lub odpowiedź niejasna"], 
+                labels = ["znacznik1.png","znacznik21.png","znacznik2.png","znacznik26.png","znacznik27.png","znacznik23.png","znacznik7.png"];
+            for (var i = 0; i < kategorie.length; i++) {
+                div.innerHTML += (" <img src="+ labels[i] +" height='20' width='20'>") + " " + kategorie[i] +'<br>';
+            }
+            return div;
+        };
+        legend.addTo(map);
+
+        map.addLayer(points);
+    
+    </script>
+    
+    
+    </body>
+    <a href = "atlas.html"><i>Atlas kultury ludowej w Polsce</i> - wykaz map</i></a>
+    <br>
+    <a href = "index.html">Powrót na stronę główną</a>
+    </html>
