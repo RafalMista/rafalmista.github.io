@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
+    <script src="atlas_Moszynski.geojson"></script>
+<style>
+    #map {height: 720px;}
+    .legend {
+        background-color: white;
+        line-height: 30px;
+        padding-left: 5px;
+        padding-right: 10px;
+        font-size: 15px;
+    }
+</style>
+</head>
+
+<body>
+    Nazwa Pasa Oriona (wzgl. Oriona)
+    <br>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([52.114503, 19.423561], 6);
+
+        var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
+        var znacznik2 = L.icon({iconUrl: 'znacznik2.png', iconSize: [20,20]});
+        var znacznik5 = L.icon({iconUrl: 'znacznik5.png', iconSize: [20,20]});
+        var znacznik7 = L.icon({iconUrl: 'znacznik7.png', iconSize: [20,20]}); 
+        var znacznik8 = L.icon({iconUrl: 'znacznik8.png', iconSize: [20,20]}); 
+        var znacznik21 = L.icon({iconUrl: 'znacznik21.png', iconSize: [20,20]});
+        var znacznik23 = L.icon({iconUrl: 'znacznik23.png', iconSize: [20,20]});
+        var znacznik34 = L.icon({iconUrl: 'znacznik34.png', iconSize: [20,20]});
+        var znacznik35 = L.icon({iconUrl: 'znacznik35.png', iconSize: [20,20]});
+        var znacznik_K = L.icon({iconUrl: 'znacznik_K.png', iconSize: [20,20]});
+        var znacznik_S = L.icon({iconUrl: 'znacznik_S.png', iconSize: [20,20]});
+        var znacznik_TRJ = L.icon({iconUrl: 'znacznik_TRJ.png', iconSize: [20,20]});
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        var points = L.geoJSON(atlas,{onEachFeature: function(feature,layer) 
+            {layer.bindPopup(feature.properties.ID + ' ' + feature.properties.Nazwa);
+                if (feature.properties.a3m1 == "kośce, koścowie, kascỳ") return layer.setIcon(znacznik1);
+                if (feature.properties.a3m1 == 'kośniki (i kośnicy)') return layer.setIcon(znacznik21);
+                if (feature.properties.a3m1 == 'kosiarze, kosari') return layer.setIcon(znacznik2);
+                if (feature.properties.a3m1 == 'kosy') return layer.setIcon(znacznik34);
+                if (feature.properties.a3m1 == 'skosy') return layer.setIcon(znacznik35);
+                if (feature.properties.a3m1 == 'čepỳhy itp.') return layer.setIcon(znacznik23);
+                if (feature.properties.a3m1 == 'trzej królowie, try koroli') return layer.setIcon(znacznik_K);
+                if (feature.properties.a3m1 == 'try sostry') return layer.setIcon(znacznik_S);
+                if (feature.properties.a3m1 == 'Trojca') return layer.setIcon(znacznik_TRJ);
+                if (feature.properties.a3m1 == 'inne') return layer.setIcon(znacznik5);
+                if (feature.properties.a3m1 == 'kosiarze, kosari; inne') return layer.setIcon(znacznik7);
+                if (feature.properties.a3m1 == 'brak odpowiedzi') return layer.setIcon(znacznik7);
+                if (feature.properties.a3m1 == null) return layer.setIcon(znacznik8);
+            }});
+            
+        var legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'), 
+                kategorie = ["kośce, koścowie, kascỳ", 'kośniki (i kośnicy)', 'kosiarze, kosari', 'kosy', 'skosy', "čepỳhy itp.", "trzej królowie, try koroli", "try sostry",'Trojca','inne','brak odpowiedzi'], 
+                labels = ["znacznik1.png","znacznik21.png","znacznik2.png","znacznik34.png","znacznik35.png","znacznik23.png","znacznik_K.png","znacznik_S.png","znacznik_TRJ.png","znacznik5.png","znacznik7.png"];
+            for (var i = 0; i < kategorie.length; i++) {
+                div.innerHTML += (" <img src="+ labels[i] +" height='20' width='20'>") + " " + kategorie[i] +'<br>';
+            }
+            return div;
+        };
+        legend.addTo(map);
+
+        map.addLayer(points);
+    
+    </script>
+    
+    
+    </body>
+    <a href = "atlas.html"><i>Atlas kultury ludowej w Polsce</i> - wykaz map</i></a>
+    <br>
+    <a href = "index.html">Powrót na stronę główną</a>
+    </html>
