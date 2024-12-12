@@ -70,9 +70,9 @@
         };
         legend.addTo(map);
 
-        map.addLayer(points);
+        //map.addLayer(points);
 
-        var overlays = {"Główne rzeki": L.geoJSON(rzeki)};
+        var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a3m8.png', [[41.743543622, 12.286382883], [58.813888285, 31.800980130]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);
     
     </script>
