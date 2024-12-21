@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
+    <script src="atlas_Moszynski.geojson"></script>
+    <script src="rzeki.geojson"></script>
+<style>
+    body {
+          font-family: sans-serif;
+      }
+    #map {height: 720px;}
+    .legend {
+        background-color: white;
+        line-height: 30px;
+        padding-left: 5px;
+        padding-right: 10px;
+        font-size: 15px;
+    }
+</style>
+</head>
+
+<body>
+    Dwugatunkowość borsuka, jeża i kreta
+    <br>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([52.114503, 19.423561], 6);
+
+        var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
+        var znacznik2 = L.icon({iconUrl: 'znacznik2.png', iconSize: [20,20]});
+        var znacznik7 = L.icon({iconUrl: 'znacznik7.png', iconSize: [20,20]});
+        var znacznik8 = L.icon({iconUrl: 'znacznik8.png', iconSize: [20,20]});
+        var znacznik41 = L.icon({iconUrl: 'znacznik41.png', iconSize: [20,20]});
+        var znacznik42 = L.icon({iconUrl: 'znacznik42.png', iconSize: [20,20]});
+        var znacznik43 = L.icon({iconUrl: 'znacznik43.png', iconSize: [20,20]});
+        var znacznik44 = L.icon({iconUrl: 'znacznik44.png', iconSize: [20,20]});
+        var znacznik45 = L.icon({iconUrl: 'znacznik45.png', iconSize: [20,20]});
+        var znacznik46 = L.icon({iconUrl: 'znacznik46.png', iconSize: [20,20]});
+        var znacznik47 = L.icon({iconUrl: 'znacznik47.png', iconSize: [20,20]});
+        var znacznik48 = L.icon({iconUrl: 'znacznik48.png', iconSize: [20,20]});
+        var znacznik49 = L.icon({iconUrl: 'znacznik49.png', iconSize: [20,20]});
+
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+    
+        var points = L.geoJSON(atlas,{onEachFeature: function(feature,layer) 
+            {layer.bindPopup(feature.properties.ID + ' ' + feature.properties.Nazwa);
+                if (feature.properties.a2m2 == "są dwa gatunki borsuków: 1) z morda psią, 2) ze świńską") return layer.setIcon(znacznik1);
+                if (feature.properties.a2m2 == "to samo o jeżu") return layer.setIcon(znacznik2);
+                if (feature.properties.a2m2 == "to samo o krecie") return layer.setIcon(znacznik46);
+                if (feature.properties.a2m2 == "borsuk ma mordę psią a jeż świńską") return layer.setIcon(znacznik41);
+                if (feature.properties.a2m2 == "borsuk ma mordę psią a dzik świńską") return layer.setIcon(znacznik43);
+                if (feature.properties.a2m2 == "brak odpowiedzi lub odpowiedź niejasna") return layer.setIcon(znacznik7);
+                if (feature.properties.a2m2 == "to samo o jeżu; to samo o krecie") return layer.setIcon(znacznik45);
+                if (feature.properties.a2m2 == "to samo o jeżu; są dwa gatunki borsuków: 1) z morda psią, 2) ze świńską") return layer.setIcon(znacznik48);
+                if (feature.properties.a2m2 == "są dwa gatunki borsuków: 1) z morda psią, 2) ze świńską; to samo o jeżu") return layer.setIcon(znacznik47);
+                if (feature.properties.a2m2 == "borsuk ma mordę psią a jeż świńską?") return layer.setIcon(znacznik42);
+                if (feature.properties.a2m2 == "są dwa gatunki borsuków: 1) z morda psią, 2) ze świńską?") return layer.setIcon(znacznik49);
+                if (feature.properties.a2m2 == "borsuk ma mordę psią a dzik świńską?") return layer.setIcon(znacznik44);
+                if (feature.properties.a2m2 == null) return layer.setIcon(znacznik8);
+            }}).addTo(map);
+            
+        var legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'), 
+                kategorie = ["są dwa gatunki borsuków: 1) z morda psią, 2) ze świńską", "to samo o jeżu", "to samo o krecie", "borsuk ma mordę psią a jeż świńską", "borsuk ma mordę psią a dzik świńską", "brak odpowiedzi lub odpowiedź niejasna"], 
+                labels = ["znacznik1.png","znacznik2.png","znacznik46.png","znacznik41.png","znacznik43.png","znacznik7.png"];
+            for (var i = 0; i < kategorie.length; i++) {
+                div.innerHTML += (" <img src="+ labels[i] +" height='20' width='20'>") + " " + kategorie[i] +'<br>';
+            }
+            return div;
+        };
+        legend.addTo(map);
+
+        //map.addLayer(points);
+
+        var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a2m2.png', [[41.909983745, 12.054626810], [58.935507651, 31.428498841]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
+        L.control.layers(null, overlays).addTo(map);
+    
+    </script>
+    
+    
+    </body>
+    <a href = "atlas.html"><i>Atlas kultury ludowej w Polsce</i> - wykaz map</i></a>
+    <br>
+    <a href = "index.html">Powrót na stronę główną</a>
+    </html>
