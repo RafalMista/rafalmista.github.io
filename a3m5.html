@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
+    <script src="atlas_Moszynski.geojson"></script>
+    <script src="rzeki.geojson"></script>
+<style>
+    body {
+          font-family: sans-serif;
+      }
+    #map {height: 720px;}
+    .legend {
+        background-color: white;
+        line-height: 30px;
+        padding-left: 5px;
+        padding-right: 10px;
+        font-size: 15px;
+    }
+</style>
+</head>
+
+<body>
+    Człowiek zabity przez piorun
+    <br>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([52.114503, 19.423561], 6);
+
+        var znacznik6 = L.icon({iconUrl: 'znacznik6.png', iconSize: [20,20]}); 
+        var znacznik7 = L.icon({iconUrl: 'znacznik7.png', iconSize: [20,20]}); 
+        var znacznik8 = L.icon({iconUrl: 'znacznik8.png', iconSize: [20,20]}); 
+        var znacznik15 = L.icon({iconUrl: 'znacznik15.png', iconSize: [20,20]});
+        var znacznik34 = L.icon({iconUrl: 'znacznik34.png', iconSize: [20,20]});
+        var znacznik50 = L.icon({iconUrl: 'znacznik50.png', iconSize: [20,20]});
+        var znacznik51 = L.icon({iconUrl: 'znacznik51.png', iconSize: [20,20]});
+        var znacznik52 = L.icon({iconUrl: 'znacznik52.png', iconSize: [20,20]});
+        var znacznik53 = L.icon({iconUrl: 'znacznik53.png', iconSize: [20,20]});
+        var znacznik54 = L.icon({iconUrl: 'znacznik54.png', iconSize: [20,20]});
+        var znacznik55 = L.icon({iconUrl: 'znacznik55.png', iconSize: [20,20]});
+        var znacznik56 = L.icon({iconUrl: 'znacznik56.png', iconSize: [20,20]});
+        var znacznik57 = L.icon({iconUrl: 'znacznik57.png', iconSize: [20,20]});
+        var znacznik58 = L.icon({iconUrl: 'znacznik58.png', iconSize: [20,20]});
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        var points = L.geoJSON(atlas,{onEachFeature: function(feature,layer) 
+            {layer.bindPopup(feature.properties.ID + ' ' + feature.properties.Nazwa);
+                if (feature.properties.a3m5 == "zły duch lub diabeł lub czart itp.") return layer.setIcon(znacznik51);
+                if (feature.properties.a3m5 == 'utopiec (demon wodny)') return layer.setIcon(znacznik50);
+                if (feature.properties.a3m5 == 'dusza (dziecka) zmarłego bez chrztu') return layer.setIcon(znacznik52);
+                if (feature.properties.a3m5 == 'dusza dziecka poronionego, zabitego itp.') return layer.setIcon(znacznik53);
+                if (feature.properties.a3m5 == 'dusza dziecka poronionego, zabitego itp. i zmarłego bez chrztu') return layer.setIcon(znacznik34);
+                if (feature.properties.a3m5 == 'latawiec') return layer.setIcon(znacznik15);
+                if (feature.properties.a3m5 == 'inne') return layer.setIcon(znacznik54);
+                if (feature.properties.a3m5 == 'brak tradycji') return layer.setIcon(znacznik6);
+                if (feature.properties.a3m5 == 'brak odpowiedzi lub odpowiedź niejasna') return layer.setIcon(znacznik7);
+                if (feature.properties.a3m5 == 'zły duch lub diabeł lub czart itp.; dusza (dziecka) zmarłego bez chrztu') return layer.setIcon(znacznik58);
+                if (feature.properties.a3m5 == 'dusza dziecka poronionego, zabitego itp.; zły duch lub diabeł lub czart itp.') return layer.setIcon(znacznik57);
+                if (feature.properties.a3m5 == 'dusza (dziecka) zmarłego bez chrztu; zły duch lub diabeł lub czart itp.') return layer.setIcon(znacznik56);
+                if (feature.properties.a3m5 == 'zły duch lub diabeł lub czart itp.; latawiec') return layer.setIcon(znacznik55);
+                if (feature.properties.a3m5 == null) return layer.setIcon(znacznik8);
+            }}).addTo(map);
+            
+        var legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'), 
+                kategorie = ["zły duch lub diabeł lub czart itp.", 
+                            'utopiec (demon wodny)', 
+                            'dusza (dziecka) zmarłego bez chrztu', 
+                            'dusza dziecka poronionego, zabitego itp.', 
+                            'dusza dziecka poronionego, zabitego itp. i zmarłego bez chrztu', 
+                            "latawiec", 
+                            "inne", 
+                            "brak tradycji",
+                            "brak odpowiedzi lub odpowiedź niejasna"], 
+                labels = ["znacznik51.png",
+                          "znacznik50.png",
+                          "znacznik52.png",
+                          "znacznik53.png",
+                          "znacznik34.png",
+                          "znacznik15.png",
+                          "znacznik54.png",
+                          "znacznik6.png",
+                          "znacznik7.png"];
+            for (var i = 0; i < kategorie.length; i++) {
+                div.innerHTML += (" <img src="+ labels[i] +" height='20' width='20'>") + " " + kategorie[i] +'<br>';
+            }
+            return div;
+        };
+        legend.addTo(map);
+
+        //map.addLayer(points);
+
+        var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a3m5.png', [[41.618857051, 12.587515173], [58.779741758, 32.226315644]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
+        L.control.layers(null, overlays).addTo(map);
+    
+    </script>
+    
+    
+    </body>
+    <a href = "atlas.html"><i>Atlas kultury ludowej w Polsce</i> - wykaz map</i></a>
+    <br>
+    <a href = "index.html">Powrót na stronę główną</a>
+    </html>
