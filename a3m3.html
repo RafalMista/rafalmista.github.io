@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
+    <script src="atlas_Moszynski.geojson"></script>
+    <script src="rzeki.geojson"></script>
+<style>
+    body {
+          font-family: sans-serif;
+      }
+    #map {height: 720px;}
+    .legend {
+        background-color: white;
+        line-height: 30px;
+        padding-left: 5px;
+        padding-right: 10px;
+        font-size: 15px;
+    }
+</style>
+</head>
+
+<body>
+    Nazwa pleśniawek (soor)
+    <br>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([52.114503, 19.423561], 6);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        //map.addLayer(points);
+
+        var overlays = {"Oryginalna mapa": L.imageOverlay('a3m3.png', [[41.581875653, 12.611259197], [58.612542591, 32.031966050]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
+        L.control.layers(null, overlays).addTo(map);
+    
+    </script>
+    
+    
+    </body>
+    <a href = "atlas.html"><i>Atlas kultury ludowej w Polsce</i> - wykaz map</i></a>
+    <br>
+    <a href = "index.html">Powrót na stronę główną</a>
+    </html>
