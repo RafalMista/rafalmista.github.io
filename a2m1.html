@@ -27,13 +27,46 @@
     <script>
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
+        var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
+        var znacznik5 = L.icon({iconUrl: 'znacznik5.png', iconSize: [20,20]});
+        var znacznik7 = L.icon({iconUrl: 'znacznik7.png', iconSize: [20,20]});
+        var znacznik8 = L.icon({iconUrl: 'znacznik8.png', iconSize: [20,20]});
+        var znacznik34 = L.icon({iconUrl: 'znacznik34.png', iconSize: [20,20]});
+        var znacznik_S = L.icon({iconUrl: 'znacznik_S.png', iconSize: [20,20]});
+        var znacznik34_S = L.icon({iconUrl: 'znacznik34_S.png', iconSize: [20,20]});
+        var znacznik60 = L.icon({iconUrl: 'znacznik60.png', iconSize: [20,20]});
+
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
+    
+        var points = L.geoJSON(atlas,{onEachFeature: function(feature,layer) 
+            {layer.bindPopup(feature.properties.ID + ' ' + feature.properties.Nazwa);
+                if (feature.properties.a2m1 == "wietek itp.") return layer.setIcon(znacznik1);
+                if (feature.properties.a2m1 == "stary miesiąc itp.") return layer.setIcon(znacznik34);
+                if (feature.properties.a2m1 == "sierp itp.") return layer.setIcon(znacznik_S);
+                if (feature.properties.a2m1 == "inne") return layer.setIcon(znacznik5);
+                if (feature.properties.a2m1 == "brak odpowiedzi") return layer.setIcon(znacznik7);
+                if (feature.properties.a2m1 == "stary miesiąc itp.; sierp itp.") return layer.setIcon(znacznik34_S);
+                if (feature.properties.a2m1 == "stary miesiąc itp.; wietek itp.") return layer.setIcon(znacznik60);
+                if (feature.properties.a2m1 == null) return layer.setIcon(znacznik8);
+            }}).addTo(map);
+            
+        var legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'), 
+                kategorie = ["wietek itp.", "stary miesiąc itp.", "sierp itp.", "inne", "brak odpowiedzi"], 
+                labels = ["znacznik1.png","znacznik34.png","znacznik_S.png","znacznik5.png","znacznik7.png"];
+            for (var i = 0; i < kategorie.length; i++) {
+                div.innerHTML += (" <img src="+ labels[i] +" height='20' width='20'>") + " " + kategorie[i] +'<br>';
+            }
+            return div;
+        };
+        legend.addTo(map);
 
         //map.addLayer(points);
 
-        var overlays = {"Oryginalna mapa": L.imageOverlay('a2m1.png', [[41.865452773, 12.289834660], [59.024906993, 31.767066272]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
+        var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a2m1.png', [[41.865452773, 12.289834660], [59.024906993, 31.767066272]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);
     
     </script>

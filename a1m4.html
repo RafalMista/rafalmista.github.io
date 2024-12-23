@@ -27,13 +27,51 @@
     <script>
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
+        var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
+        var znacznik7 = L.icon({iconUrl: 'znacznik7.png', iconSize: [20,20]}); 
+        var znacznik8 = L.icon({iconUrl: 'znacznik8.png', iconSize: [20,20]});
+        var znacznik_S = L.icon({iconUrl: 'znacznik_S.png', iconSize: [20,20]});
+        var znacznik41 = L.icon({iconUrl: 'znacznik41.png', iconSize: [20,20]}); 
+        var znacznik61 = L.icon({iconUrl: 'znacznik61.png', iconSize: [20,20]});
+        var znacznik62 = L.icon({iconUrl: 'znacznik62.png', iconSize: [20,20]});
+        var znacznik63 = L.icon({iconUrl: 'znacznik63.png', iconSize: [20,20]});
+        var znacznik64 = L.icon({iconUrl: 'znacznik64.png', iconSize: [20,20]});
+        var znacznik65 = L.icon({iconUrl: 'znacznik65.png', iconSize: [20,20]});
+
+
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
+    
+        var points = L.geoJSON(atlas,{onEachFeature: function(feature,layer) 
+            {layer.bindPopup(feature.properties.ID + ' ' + feature.properties.Nazwa);
+                if (feature.properties.a1m4 == "nów, nowy miesiąc itp.") return layer.setIcon(znacznik41);
+                if (feature.properties.a1m4 == "młody miesiąc itp.") return layer.setIcon(znacznik1);
+                if (feature.properties.a1m4 == "na młodzie") return layer.setIcon(znacznik61);
+                if (feature.properties.a1m4 == "sierp") return layer.setIcon(znacznik_S);
+                if (feature.properties.a1m4 == "brak odpowiedzi lub odpowiedź niejasna") return layer.setIcon(znacznik7);
+                if (feature.properties.a1m4 == "nów, nowy miesiąc itp.; sierp") return layer.setIcon(znacznik62);
+                if (feature.properties.a1m4 == "na młodzie; nów, nowy miesiąc itp.") return layer.setIcon(znacznik63);
+                if (feature.properties.a1m4 == "młody miesiąc itp.; nów, nowy miesiąc itp.") return layer.setIcon(znacznik64);
+                if (feature.properties.a1m4 == "nów, nowy miesiąc itp.; młody miesiąc itp.") return layer.setIcon(znacznik65);
+                if (feature.properties.a1m4 == null) return layer.setIcon(znacznik8);
+            }}).addTo(map);
+            
+        var legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'), 
+                kategorie = ["nów, nowy miesiąc itp.", "młody miesiąc itp.", "na młodzie", "sierp", "brak odpowiedzi lub odpowiedź niejasna"], 
+                labels = ["znacznik41.png","znacznik1.png","znacznik61.png","znacznik_S.png","znacznik7.png"];
+            for (var i = 0; i < kategorie.length; i++) {
+                div.innerHTML += (" <img src="+ labels[i] +" height='20' width='20'>") + " " + kategorie[i] +'<br>';
+            }
+            return div;
+        };
+        legend.addTo(map);
 
         //map.addLayer(points);
 
-        var overlays = {"Oryginalna mapa": L.imageOverlay('a1m4.png', [[42.158827733, 12.286080993], [59.076747990, 31.485651799]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
+        var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a1m4.png', [[42.158827733, 12.286080993], [59.076747990, 31.485651799]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);
     
     </script>
