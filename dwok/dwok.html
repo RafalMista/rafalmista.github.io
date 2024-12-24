@@ -1,0 +1,92 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="mapa_dwok.geojson"></script>
+
+<style>
+    body {
+            font-family: sans-serif;
+        }
+        #map {height: 720px;
+            z-index:1;}
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+</style>
+</head>
+
+<body>
+<b>Indeks przestrzenny melodii ze zbiorów Oskara Kolberga</b>
+<br>
+Indeks zawiera wszystkie melodie z dotychczas opublikowanych tomów <i>Dzieł Wszystkich Oskara Kolberga</i> powiązane ze współrzędnymi geograficznymi.<br><br>
+<button id="instrukcja_przycisk">Instrukcja</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+Na mapie zaznaczono wszystkie miejscowości pojawiające się przy opublikowanych dotychczas zapisach nutowych w "Dziełach Wszystkich Oskara Kolberga" (DWOK) wraz z przypisanymi do nich melodiami. Po kliknięciu na miejscowość wyświetla się sygnatura zapisu w postaci: 
+<p style="text-align:center;">[numer tomu DWOK].[numer melodii w tomie].</p>
+"_2" oznacza, że w tomie istnieje druga odrębnie numerowana lista melodii i z niej pochodzi dana melodia.
+Linki prowadzą do stron z plikami dźwiękowymi odgrywającymi daną melodię.<br><br>
+Uwagi:<ul>
+<li>nie wszystkie zapisy w DWOK są przypisane do miejscowości. Takie melodie nie są uwzględnione na mapie, można znaleźć je jednak w pliku xlsx z pełnym indeksem melodii w DWOK;</li>
+<li>lokalizacje melodii są przybliżone i podawane z różną szczegółowością. Np. melodie z okolic Warszawy można znaleźć w punkcie umiejscowionym w centrum Warszawy, jak i w poszczególnych dzielnicach;</li>
+<li>część melodii przypisana jest do kilku lokalizacji równocześnie.</li></ul><br><br>
+W przypadku znalezienia błędów lub niedziałających linków proszę o kontakt.<br><br>
+©Rafał Miśta - indeks melodii i mapa autorstwa Rafała Miśty.
+    </div>
+  </div>
+<br><br>
+<a href="rozklad.svg">Rozkład przestrzenny</a><br>
+
+<div id="map"></div>
+<script>
+// Instrukcja
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+// Mapa
+    var map = L.map('map').setView([52.114503, 19.423561], 6);
+   
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var points = L.geoJSON(kolberg,{onEachFeature: function(feature,layer) 
+        {layer.bindPopup(feature.properties.zapisadr)}});
+    map.addLayer(points);    
+
+</script>
+</body>
+<br>
+<a href = "../index.html">Powrót na stronę główną</a>
+
+</html>
