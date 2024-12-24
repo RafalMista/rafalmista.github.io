@@ -59,10 +59,10 @@
 Спасылкі вядуць на старонкі з гукавымі файламі, якія граюць зададзеную мелодыю.<br><br>
 Каментарыі:<ul>
 <li>не ўсе запісы ў DWOK аднесены да населеных пунктаў. Такія мелодыі не ўключаны ў карту, але іх можна знайсці ў файле xlsx з поўным індэксам мелодый у DWOK;</li>
-<li>месца размяшчэння мелодый прыблізныя і пададзены з рознай ступенню дэталізацыі. Напрыклад, мелодыі варшаўскага раёна можна знайсці ў кропцы, размешчанай у цэнтры Варшавы, а таксама ў асобных раёнах;</li>
-<li>некаторыя мелодыі прызначаюцца для некалькіх месцаў адначасова.</li></ul><br><br>
-Калі вы знойдзеце якія-небудзь памылкі або непрацуючыя спасылкі, звяжыцеся са мной.<br><br>
-©Rafał Miśta - паказальнік мелодый і карта Рафала Міс'ты.
+<li>месца размяшчэння мелодый прыблізныя і пададзены з рознай ступенню дэталізацыі. Напрыклад, мелодыі з ваколіц Варшавы можна знайсці ў кропцы, размешчанай у цэнтры Варшавы, а таксама ў асобных раёнах;</li>
+<li>некаторыя мелодыі прывязаныя для некалькіх мясцовасцей адначасова (Кольберг пры вялікай частцы запісаў пазначаў адначасова некалькі мясцовасцей бытавання).</li></ul><br><br>
+Калі вы знойдзеце якія-небудзь памылкі або спасылкі, якія не працуюць, звяжыцеся са мной.<br><br>
+©Rafał Miśta - паказальнік мелодый і карта Рафала Місьты.
     </div>
   </div>
 <br><br>
@@ -79,14 +79,20 @@
     window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
 
 // Mapa
-    var map = L.map('map').setView([52.114503, 19.423561], 6);
+    var map = L.map('map', {preferCanvas: true}).setView([52.114503, 19.423561], 6);
    
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var points = L.geoJSON(kolberg,{onEachFeature: function(feature,layer) 
-        {layer.bindPopup(feature.properties.zapisadr)}});
+    var points = L.geoJSON(kolberg, 
+    {pointToLayer: function(feature, latlng)
+        {return new L.circleMarker(latlng, {radius: 5, color: 'navy'});},
+    
+    onEachFeature: function(feature,layer) 
+        {layer.bindPopup(feature.properties.zapisadr)}
+    });
+
     map.addLayer(points);    
 
 </script>
