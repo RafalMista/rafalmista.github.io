@@ -85,8 +85,14 @@
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var points = L.geoJSON(kolberg,{onEachFeature: function(feature,layer) 
-        {layer.bindPopup(feature.properties.zapisadr)}});
+    var points = L.geoJSON(kolberg, 
+    {pointToLayer: function(feature, latlng)
+        {return new L.circleMarker(latlng, {radius: 5, color: 'navy'});},
+    
+    onEachFeature: function(feature,layer) 
+        {layer.bindPopup(feature.properties.zapisadr)}
+    });
+
     map.addLayer(points);    
 
 </script>
