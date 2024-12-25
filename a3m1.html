@@ -59,7 +59,7 @@
                 if (feature.properties.a3m1 == 'kosiarze, kosari; inne') return layer.setIcon(znacznik7);
                 if (feature.properties.a3m1 == 'brak odpowiedzi') return layer.setIcon(znacznik7);
                 if (feature.properties.a3m1 == null) return layer.setIcon(znacznik8);
-            }});
+            }}).addTo(map);
             
         var legend = L.control({position: 'bottomleft'});
         legend.onAdd = function (map) {
@@ -73,15 +73,20 @@
         };
         legend.addTo(map);
 
-        //map.addLayer(points);
+        map.addLayer(points);
 
-        var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a3m1.png', [[41.689286631, 12.023030395], [59.017143950, 31.712571176]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
+        var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a3m1.png', [[41.689286631, 12.023030395], [59.017143950, 31.712571176]]), "Polski Atlas Etnograficzny": L.imageOverlay('pae/a3m1_pae.png', [[47.011921255, 13.265864437], [55.511512130, 25.315000365]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);
     
     </script>
     
     
     </body>
+    Źródła:<br>
+    <ul>
+       <li>Lebeda [Pieńczak], Agnieszka i Kłodnicki, Zygmunt (red.nauk.), “Ludowe nazwy gwiazdozbioru Oriona/ Komentarze do Polskiego Atlasu Etnograficznego (mapy),” Cyfrowa Etnografia, Dostęp 25 grudnia 2024, https://cyfrowaetnografia.pl/items/show/10605.</li> 
+    </ul>
+
     <a href = "atlas.html"><i>Atlas kultury ludowej w Polsce</i> - wykaz map</i></a>
     <br>
     <a href = "index.html">Powrót na stronę główną</a>
