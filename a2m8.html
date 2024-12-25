@@ -27,13 +27,84 @@
     <script>
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
+        var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
+        var znacznik6 = L.icon({iconUrl: 'znacznik6.png', iconSize: [20,20]});
+        var znacznik8 = L.icon({iconUrl: 'znacznik8.png', iconSize: [20,20]}); 
+        var znacznik15 = L.icon({iconUrl: 'znacznik15.png', iconSize: [20,20]});
+        var znacznik26 = L.icon({iconUrl: 'znacznik26.png', iconSize: [20,20]});
+        var znacznik34 = L.icon({iconUrl: 'znacznik34.png', iconSize: [20,20]});
+        var znacznik50 = L.icon({iconUrl: 'znacznik50.png', iconSize: [20,20]});
+        var znacznik51 = L.icon({iconUrl: 'znacznik51.png', iconSize: [20,20]});
+        var znacznik52 = L.icon({iconUrl: 'znacznik52.png', iconSize: [20,20]});
+        var znacznik53 = L.icon({iconUrl: 'znacznik53.png', iconSize: [20,20]});
+        var znacznik66 = L.icon({iconUrl: 'znacznik66.png', iconSize: [20,20]});
+        var znacznik67 = L.icon({iconUrl: 'znacznik67.png', iconSize: [20,20]});
+        var znacznik68 = L.icon({iconUrl: 'znacznik68.png', iconSize: [20,20]});
+        var znacznik69 = L.icon({iconUrl: 'znacznik69.png', iconSize: [20,20]});
+        var znacznik70 = L.icon({iconUrl: 'znacznik70.png', iconSize: [20,20]});
+        var znacznik71 = L.icon({iconUrl: 'znacznik71.png', iconSize: [20,20]});
+        var znacznik72 = L.icon({iconUrl: 'znacznik72.png', iconSize: [20,20]});
+        var znacznik73 = L.icon({iconUrl: 'znacznik73.png', iconSize: [20,20]});
+        var znacznik74 = L.icon({iconUrl: 'znacznik74.png', iconSize: [20,20]});
+        var znacznik75 = L.icon({iconUrl: 'znacznik75.png', iconSize: [20,20]});
+        var znacznik76 = L.icon({iconUrl: 'znacznik76.png', iconSize: [20,20]});
+        var znacznik77 = L.icon({iconUrl: 'znacznik77.png', iconSize: [20,20]});
+        var znacznik78 = L.icon({iconUrl: 'znacznik78.png', iconSize: [20,20]});
+        var znacznik79 = L.icon({iconUrl: 'znacznik79.png', iconSize: [20,20]});
+        var znacznik80 = L.icon({iconUrl: 'znacznik80.png', iconSize: [20,20]});
+        var znacznik81 = L.icon({iconUrl: 'znacznik81.png', iconSize: [20,20]});
+        var znacznik82 = L.icon({iconUrl: 'znacznik82.png', iconSize: [20,20]});
+
+
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
+    
+        var points = L.geoJSON(atlas,{onEachFeature: function(feature,layer) 
+            {layer.bindPopup(feature.properties.ID + ' ' + feature.properties.Nazwa);
+                if (feature.properties.a2m8 == "olcha") return layer.setIcon(znacznik50);
+                if (feature.properties.a2m8 == "osina") return layer.setIcon(znacznik66);
+                if (feature.properties.a2m8 == "drzewa szpilkowe") return layer.setIcon(znacznik51);
+                if (feature.properties.a2m8 == "jałowiec") return layer.setIcon(znacznik67);
+                if (feature.properties.a2m8 == "zioła kłujące i szypszyna") return layer.setIcon(znacznik15);
+                if (feature.properties.a2m8 == "pokrzywa") return layer.setIcon(znacznik1);
+                if (feature.properties.a2m8 == "paproć") return layer.setIcon(znacznik26);
+                if (feature.properties.a2m8 == "bylica") return layer.setIcon(znacznik53);
+                if (feature.properties.a2m8 == "łopian") return layer.setIcon(znacznik52);
+                if (feature.properties.a2m8 == "bylica i łopian") return layer.setIcon(znacznik34);
+                if (feature.properties.a2m8 == "piołun") return layer.setIcon(znacznik68);
+                if (feature.properties.a2m8 == "łopian; bylica") return layer.setIcon(znacznik69);
+                if (feature.properties.a2m8 == "bylica; łopian; piołun") return layer.setIcon(znacznik70);
+                if (feature.properties.a2m8 == "olcha; bylica") return layer.setIcon(znacznik71);
+                if (feature.properties.a2m8 == "olcha; bylica i łopian") return layer.setIcon(znacznik72);
+                if (feature.properties.a2m8 == "łopian; bylica i łopian") return layer.setIcon(znacznik73);
+                if (feature.properties.a2m8 == "bylica i łopian; bylica; piołun") return layer.setIcon(znacznik74);
+                if (feature.properties.a2m8 == "bylica i łopian; zioła kłujące i szypszyna; bylica") return layer.setIcon(znacznik75);
+                if (feature.properties.a2m8 == "bylica i łopian; piołun") return layer.setIcon(znacznik76);
+                if (feature.properties.a2m8 == "bylica i łopian; łopian; zioła kłujące i szypszyna; pokrzywa") return layer.setIcon(znacznik77);
+                if (feature.properties.a2m8 == "jałowiec; pokrzywa") return layer.setIcon(znacznik78);
+                if (feature.properties.a2m8 == "osina; pokrzywa") return layer.setIcon(znacznik79);
+                if (feature.properties.a2m8 == "łopian; bylica i łopian; piołun") return layer.setIcon(znacznik80);
+                if (feature.properties.a2m8 == "bylica i łopian; łopian") return layer.setIcon(znacznik81);
+                if (feature.properties.a2m8 == "olcha; drzewa szpilkowe") return layer.setIcon(znacznik82);
+                if (feature.properties.a2m8 == null) return layer.setIcon(znacznik8);
+            }}).addTo(map);
+            
+        var legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'), 
+                kategorie = ["olcha", "osina", "drzewa szpilkowe", "jałowiec", "zioła kłujące i szypszyna", "pokrzywa", "paproć", "bylica", "łopian", "bylica i łopian", "piołun"], 
+                labels = ["znacznik50.png","znacznik66.png","znacznik51.png","znacznik67.png","znacznik15.png","znacznik1.png","znacznik26.png","znacznik53.png","znacznik52.png","znacznik34.png","znacznik68.png"];
+            for (var i = 0; i < kategorie.length; i++) {
+                div.innerHTML += (" <img src="+ labels[i] +" height='20' width='20'>") + " " + kategorie[i] +'<br>';
+            }
+            return div;
+        };
+        legend.addTo(map);
 
-        //map.addLayer(points);
+        map.addLayer(points);
 
-        var overlays = {"Oryginalna mapa": L.imageOverlay('a2m8.png', [[41.906518387, 12.083549966], [59.006377274, 31.806985333]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
+        var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a2m8.png', [[41.906518387, 12.083549966], [59.006377274, 31.806985333]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);
     
     </script>
