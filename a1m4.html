@@ -6,10 +6,37 @@
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
 <style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
+body {
+            font-family: sans-serif;
+        }
+        #map {height: 720px;
+            z-index:1;}
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
     .legend {
         background-color: white;
         line-height: 30px;
@@ -21,10 +48,28 @@
 </head>
 
 <body>
-    Nazwa księżyca na nowiu
-    <br>
+    Nazwa księżyca na nowiu<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+<p>Sierp księżyca, ukazujący się po parodniowej niewidzialności, bywa nazywany przez lud, zamieszkujący Polskę, bądź <i>nowym miesiącem</i> czy <i>nowiem</i>, bądź też <i>młodym m.</i> albo <i>młodzikiem</i> (okres, kiedy trwa taki księżyc, zwie się: <i>na nowiu</i> lub <i>na młodzie</i>; dnie tego okresu: <i>nowe</i> lub <i>młode dnie</i>). Załączona mapa całkiem przejrzyście demonstruje charakterystyczne rozmieszczenie obu terminów. Jak widać, rozpowszechnienie <i>nowego m.</i> tworzy typowy zasiąg dwuskrzydłowy, którego jedno skrzydło (płn.-wschodnie) jest skierowane ku Wilnu i obszarom litewskim, a drugie (płd.-wschodnie) — poza Lwów i dalej na Podole sowieckie. Ten rodzaj zasięgu z reguły zdradza u nas silną ekspansję danego zjawiska z zachodu na wschód, przyczem punkty wyjścia dla niego leżą nieraz daleko na zachodzie. Jakoż, gdybyśmy i w tym wypadku zechcieli sięgnąć do Europy zachodniej, znaleźlibyśmy tam w powszechnem użyciu termin, najdokładniej odpowiadający naszemu <i>nowemu m.</i>: cf. nmc. <i>Neumond</i>, ang. <i>new moon</i>, franc. <i>nouvelle lune</i>, łac. <i>luna nova</i> i t. d. Oczywiście jednak ta okoliczność nie dowodzi, aby nazwa <i>nowy m.</i> musiała powstać pod wpływem Zachodu; dowodzi tylko, że pod tym wpływem powstać mogła.</p>
+<p>Za tą samą ewentualnością przemawiają jeszcze dwie inne wskazówki. 1&#41; Wg nieuwzględnionych na mapie danych słownikowych, zebranych przez prof. Nitscha i przez Redakcję OL, termin <i>młody m.</i>, <i>młoźik</i>, jest w użyciu tu i owdzie po wsiach płd.-zachodniomałopolskich. Tem samem okazuje się, że ogólny zasiąg owego terminu w Polsce jest krawędziowy przerwany, a więc, że niegdyś mógł kryć cały obszar, dzielący krawędzie, na których dziś występuje, t. zn. w danym wypadku całą mn. w. Polskę. — 2&#41; Jak nas przekona jedna z dalszych map »Atlasu«, włościanie, zamieszkujący Polskę, mają zwyczaj witać sierp nowego miesiąca modlitewnemi formułkami; jedna z tego rodzaju formułek, ogromnie rozpowszechniona w płn.-zachodniej Polsce, ale znana też w innych polskich stronach oraz na naszej i sowieckiej Białorusi, czci nowy m. tytułem młodego księcia (pol. <i>księżyc</i> = błrs. gwar. <i>myładèj kńaź</i>); otóż łatwiej jest oczywiście przyjąć powstanie tego tytułu na tle zwyczaju nazywania nowego sierpa <i>młodym m.</i></p>
+<p>Zagadnienie tu poruszone ma o tyle szersze znaczenie, iż oboczność: <i>nowy m.</i> || <i>młody m.</i> występuje w wielu innych słow. językach; niestety kwestja względnej chronologji obu terminów nie została dotychczas, o ile wiem, nigdzie zbadana. Kończąc, zaznaczyłbym tu jeszcze, że hipoteza, głosząca, jakoby <i>nów</i> oznaczał pierwotnie 'okres niewidzialności księżyca' i krewnił się ze słow. <i>nyti</i> 'być osłabionym, wątłym, słabym', nie zdaje mi się być trafna. Coprawda nasi i zwłaszcza zach.-małoruscy włościanie, nazywając okres, o jakim mowa, <i>zmianą</i>, <i>zmianami</i>, <i>przemianą</i>, <i>próżnemi dniami</i> i t. d., zwą go też istotnie często <i>nowiem</i>, — ale nic łatwiejszego, jak przyjąć tu przesunięcie pierwotnego znaczenia, tem bardziej, skoro słow. nomenklatura faz księżycowych zna wcale liczne zjawiska podobne (ob. też KLS, II § 13). Przesunięcie takie łacnie mogło dojść do skutku dzięki poprzedniemu rozszerzeniu znaczenia terminu <i>nów</i> na 'okres niewidzialności'; przecież np. w p. 3. dano odpowiedź, że w owym okresie jest nów (sc. 'nowy miesiąc'), »ale my go nie widzimy,  bo w dzień wschodzi i wieczór zachodzi«.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
@@ -69,7 +114,7 @@
         };
         legend.addTo(map);
 
-        //map.addLayer(points);
+        map.addLayer(points);
 
         var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a1m4.png', [[42.158827733, 12.286080993], [59.076747990, 31.485651799]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);

@@ -5,26 +5,71 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Zasiąg wróżenia ze śledziony wieprza o nadchodzącej zimie
-    <br>
+    Zasiąg wróżenia ze śledziony wieprza o nadchodzącej zimie<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Haruspicja należą u dzisiejszych Słowian do rzadkich praktyk. Ale jedno z nich, przy którem używa się śledziony zabitego jesienią wieprza i zależnie od jej kształtów przepowiada taki lub inny przebieg zimy, było do ostatnich czasów bardzo rozpowszechnione na znacznych obszarach Słowiańszczyzny bałkańskiej (w zach. Bułgarji, Serbji, Lice, Dalmacji) i północnej; znali je też sąsiadujący ze Słowianami Litwini z jednej, a Gagauzi z drugiej strony. Załączona mapa dowodzi, że na ziemiach, należących obecnie do Rzeczypospolitej, haruspicjum powyższe musiało być dawniej zupełnie powszechne; dzisiejszy bowiem jego zasiąg (wzgl. zasiąg żywej o niem tradycji), pokrywający cały płn.-wschód państwa i tworzący większe wyspy we wschodnich oraz zachodnich Karpatach, zaś drobne wysepki na pozostałym obszarze, jest wybitnie cofający się t. zn. zanikający; przyczem zanik ten nie mógł się rozpocząć w czasach zbyt odległych.</p>
+      <p>Jako zupełny wyjątek na terytorjum polskiem podać tu należy za ks. Wł. Lęgą wróżenie z kształtu śledziony zabitego wieprza o bliskiej śmierci jednego z domowników, praktykowane w Malborskiem; podobną wróżbę uprawiają w prowincji Altmark w Niemczech. Pozatem nie znam dotychczas z Europy analogij dla zwyczajów litewsko-słowiańsko-gagauskich, o jakich tu mowa.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
@@ -43,7 +88,7 @@
                 if (feature.properties.a1m7 == "brak tradycji") return layer.setIcon(znacznik6);
                 if (feature.properties.a1m7 == "brak odpowiedzi lub odpowiedź niejasna") return layer.setIcon(znacznik7);
                 if (feature.properties.a1m7 == null) return layer.setIcon(znacznik8);
-            }});
+            }}).addTo(map);
             
         var legend = L.control({position: 'bottomleft'});
         legend.onAdd = function (map) {

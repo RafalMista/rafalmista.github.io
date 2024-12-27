@@ -7,9 +7,36 @@
     <script src="rzeki.geojson"></script>
 <style>
     body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
+            font-family: sans-serif;
+        }
+        #map {height: 720px;
+            z-index:1;}
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
     .legend {
         background-color: white;
         line-height: 30px;
@@ -21,10 +48,28 @@
 </head>
 
 <body>
-    Nazwa Plejad
-    <br>
+    Nazwa Plejad<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Pytanie ankiety, zmierzające do zdobycia wiadomości o Plejadach, a powtarzane indagowanym włościanom przez eksploratorów mn. w. bez zmian za kwestjonarjuszem, brzmiało: »Jak nazywacie małe gwiazdy, co ich jest taka kupka, jakby taka gromadka, ze 6-7?« Pytanie to miało na celu równoczesne wyjaśnienie dwu kwestyj: 1) czy i w jakiej mierze Plejady są ludowi znane oraz 2) jaką u niego noszą nazwę. Jak widać z mapy, odpowiedzi włościan stwierdziły, że obchodzące nas gwiazdy znane są w Polsce zupełnie powszechnie. Co do rozmieszczenia trzech najważniejszych ich nazw (1. <i>baby</i>, 2. <i>kurka</i> wzgl. <i>kwoka</i> i t. p., 3. <i>sito</i>), Polska daje obraz, pokrywający się mn. w. z obrazem rozmieszczenia języków: polskiego, mało- i białoruskiego, co, gdy chodzi o inne fakty z zakresu ludowego słownictwa, powtarza się — wbrew oczekiwaniom — nienazbyt często. Dodać jednakowoż należy, że wg niepewnej informacji, pozyskanej za pośrednictwem Redakcji OL, nazwa <i>kwoczka</i> byłaby znana także w Poznańskiem (między pp. 11. a 12.) oraz że W. XV, 80 podaje <i>kurę z kurczętami</i> jako nazwę Plejad ze wsi Masie w Białostockiem (między pp. 46. i 47.).</p>
+      <p>Termin <i>baby</i> i t. p. jest poza Polską w użyciu na Łużycach i na pewnym, bliżej mi nieznanym obszarze Czech: z drugiej strony Wł. Dal podaje go — obok innych — dla. Wielkorusi (wkrs. <i>bàby</i>). Takie powtarzanie się nazwy zach.-słowiańskiej w języku wielkoruskim zasługuje na uwagę, bo chociaż nazywanie Plejad »kobietami« i t. p. spotyka się często, jednak, o ile wiem, nie na terenach Europy. Zasiąg terminu <i>kurka</i> || <i>kwoka</i> i t. p., obejmujący w obrębie Rzeczypospolitej głównie obszar małoruski (ukraiński), wkracza w sposób bardzo charakterystyczny (i znajdujący liczne analogje w podobnem zachowaniu się zasięgów wielu innych zjawisk!) na płd. rubież rdzennej Polski, gdzie dzisiaj, jak wynikać się zdaje z informacji, pochodzącej ze wsi Biała v. Białka (pow. Wadowice), dokonywa ekspansji kosztem zasięgu <i>bab</i> czy <i>babek</i>. Pozatem identyczne albo prawie identyczne nazwy znam z Ukrainy sowieckiej, Rumunji, (<i>cloşcă cu puĩ</i> 'kwoczka z kurczętami' a. wprost <i>cloşcă</i> 'kwoczka"), Bułgarji i Macedonji, Węgier (<i>fiastyúk</i> 'kwoka"), Słowaczyzny i części Czech, z Niemiec, Szwajcarji, Włoch, Francji, Anglji oraz Danji (<i>aftenhöne</i> 'wieczorna kura'): nieobce są one także niektórym krajom płd.-azjatyckim i afrykańskim. — Ostatni z trzech głównych terminów: <i>sito</i>, jest rozpowszechniony na Białorusi', Litwie, Łotwie, w Estonji, Finlandji, u Wotjaków etc. Terminy: <i>gromadka</i>, <i>kupka</i> i t. p. spotykają się w Polsce bądź jako oboczne względem wymienionych powyżej, bądź też — całkiem wyjątkowo -- jako jedyne. Nawiązując zupełnie ściśle do wyglądu Plejad, mogły one i mogą z łatwością powstawać w różnych miejscach całkiem samorzutnie (cf. tu np. i wkrs. <i>kùčki</i>).</p>
+      <p>O bardzo zajmującej nazwie ruskiej <i>vołosožyr</i> i t. p., mającej odpowiedniki na Rusi sowieckiej, w zach. Bułgarji i w Jugosławji, ob. KLS, §§ 8 i 21.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

@@ -7,9 +7,9 @@
     <script src="rzeki.geojson"></script>
 <style>
     body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
+            font-family: sans-serif;
+        }
+        #map {height: 720px;}
     .legend {
         background-color: white;
         line-height: 30px;
@@ -21,10 +21,10 @@
 </head>
 
 <body>
-    Wykaz miejscowości
-    <br>
+    Wykaz miejscowości<br>
     <div id="map"></div>
     <script>
+
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
@@ -44,7 +44,7 @@
                 if (feature.properties.a1m0 == "nadprogramowy 1 odp") return layer.setIcon(znacznik2);
                 if (feature.properties.a1m0 == "nadprogramowy 2 odp") return layer.setIcon(znacznik4);
                 if (feature.properties.a1m0 == "nadprogramowy niew") return layer.setIcon(znacznik5);
-            }});
+            }}).addTo(map);
             
         var legend = L.control({position: 'bottomleft'});
         legend.onAdd = function (map) {
@@ -58,7 +58,7 @@
         };
         legend.addTo(map);
 
-        //map.addLayer(points);
+        map.addLayer(points);
 
         var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a1m0.png', [[42.001232220, 11.937712007], [59.095345568, 31.240468442]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);

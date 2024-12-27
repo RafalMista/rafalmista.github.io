@@ -7,24 +7,64 @@
     <script src="rzeki.geojson"></script>
 <style>
     body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
+            font-family: sans-serif;
+        }
+        #map {height: 720px;
+            z-index:1;}
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
 </style>
 </head>
 
 <body>
-    Przybywanie dnia około Nowego Roku
-    <br>
+    Przybywanie dnia około Nowego Roku<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Powiedzenia czy przysłowia w rodzaju takiego: »Na N. Rok (albo na Boże Narodzenie etc.) przybywa dnia na kurzy krok (lub stopę i t. p.)«, są znane na ogromnych obszarach Europy i Syberji. Jak wynika z danych, uwzględnionych przeze mnie w KLS, II [Kultura Ludowa Słowian - przyp. RM], nawiązują one do mierzenia zasięgu promieni słonecznych, padających do wnętrza mieszkań (1. c. § 120), a może też i do mierzenia odsłonecznych cieni (§ 119). Choć lud naogół już o tem nie pamięta, są jednak do dziś w płd. Polsce starcy, co umieją pokazowo rzecz wyjaśnić i ową »kurzą stopę. na podłodze izby odmierzyć. W obrębie Rzeczypospolitej obchodzące nas przysłowia bywają odnoszone bądź do N. Roku, bądź też — rzadziej — do innej bliskiej daty: do 13/XII (św. Łucji), 17/XI1 (św. Barbary wg st. stylu), 22/X11 (Niepokalane Poczęcie wg st. st.), 25/XII (Boże Narodzenie), 6/1 (Trzech Króli); wcale często jednak bywają rozbudowane i wtedy dotyczą dwu dat np.: »Na Boże Narodzenie — to na kurzy stopce, a na N. Rok — na barani skok« (p. 23). Podobnie złożone przysłowia spotykają się — zupełnie zresztą wyjątkowo — i poza Polską; więc, dajmy na to, wersja znana mi z Macedonji brzmi: »Dzień tak rośnie: na św. Ignacego (2/I wg n. st.) podłuży się o szpic igły; na Boże Narodzenie (7/1 wg n. st.) — ile kogut z proga skoczy, a na św. Atanazego (31/I wg n. st.) — ile skoczy jeleń-trzylatek«.</p>
+      <p>Najprawdopodobniej takimto właśnie złożonym przysłowiom zawdzięcza swe powstanie oboczność dwu wersyj prostych, najbardziej typowych dla Polski: wersji K, mówiącej tylko o kroku i t. p. kury lub koguta, i wersji B, wspominającej tylko o skoku i t. p. barana. Jak wynika z danych z Anglji, Niemiec, Czech, Chorwacji, Serbji, Ukrainy wschodniej, Wielkorusi europejskiej i syberyjskiej, gdzie wszędzie jest mowa tylko o kurze albo kogucie, oraz jak wynika z rozmieszczenia zasięgów wspomnianych wersyj w Polsce, pierwotną tu była wersja K (posiadająca dziś u nas zasiąg cofający się, krawędziowy). Później — najwidoczniej w centralnej Polsce — nastąpiło rozwinięcie »przysłowia«, tak, że objęło ono dwie daty i równało się sumie dwu głównych wersyj dzisiejszych (K+B; przykład patrz wyżej). Sczasem, ewolwując dalej, rozszerzone przysłowie uległo rozkładowi, przyczem naogół ocalała tylko jedna jego część równa wersji B. Zasiąg owej wersji jest zajmujący głównie przez to, że rozszerzył się daleko na Białoruś i nawet na Polesie (szlachta zna ją także na Polesiu rzeczyckiem poza granicami Polski), a natomiast, o ile mi dotychczas wiadomo, nie zdołał się przedrzeć poza Lwów. Zapewne wzdłuż pogranicza tego zasięgu i cofającego się zasięgu wersji K potworzyły się wtórnie — jak to często bywa w analogicznych wypadkach — nowe wersje, mówiące o skoku lub kroku zająca (Z), »kozy«, wilka i t. p. Jednak zasiąg wersji Z tak wygląda, że nie można być pewnym, czy w rozwoju przysłowia nie poprzedziła ona wersji B.</p>
+      <p>Ze szczegółów zasługuje jeszcze na podkreślenie zasiąg pewnej odmiany wersji K, wzmiankującej o »skoku koguta z progu.; powtarza się bowiem ta odmiana w Serbji i Macedonji.</p>
+      <br>
+      <p>Uwaga do mapy. Dwie różne sygnatury, kryjące jeden i ten sam punkt, oznaczają, że w tym punkcie jest w użyciu przysłowie, złożone z dwu odpowiednich wersyj prostych, lub że są tam znane dwie luźne odpowiednie wersje proste obok siebie.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
     <script>
+            // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
