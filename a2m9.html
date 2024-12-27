@@ -5,26 +5,74 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Rośliny zatykane na św. Jana w strzechy, ściany itp., II
-    <br>
+    Rośliny zatykane na św. Jana w strzechy, ściany itp., II<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>W całej prawie zachodniej i południowej Polsce oprócz bylicy i łopianu występuje <i>lipa</i>, sięgająca jednak aż na zachodnie i południowe Polesie. Rzadziej od lipy spotykamy <i>bez czarny</i> (<i>Sambucus nigra</i> L.), ale i on jest używany w całej niemal rdzennej Polsce; unika natomiast krajów ruskich. Także <i>piołun</i>, używany sporadycznie w Polsce, omija północny wschód naszego państwa.</p>
+      <p>Mniej lub więcej. odrębne, charakterystyczne i bardzo zajmujące zasięgi tworzą dalej: <i>olcha</i>, wyraźnie zdająca się nawiązywać — jak i <i>bez</i> — do wpływów z Zachodu: <i>klony</i> (»klon« na płn.-zachodzie oraz sporadycznie w ok. Brzeżan i Kobrynia i »jawor« na płd.-zachodzie i wyjątkowo w ok. Kalisza), <i>leszczyna</i>, <i>jesion</i>, <i>wierzby</i> (»<i>wierzba</i>« i »<i>wiklina</i>«), <i>drzewa szpilkowe</i> (<i>świerk</i>, <i>sosna</i>, <i>jodła</i>), wreszcie — <i>jałowiec</i>. Z ziół zasługuje jeszcze na uwagę <i>dziurawiec</i> (<i>Hypericum perforatum</i> L., który pod różnemi nazwani bywa niekiedy stosowany zarówno na północy rdzennej Polski (np. w ok. Grudziądza: »krzyżowe ziele«), jak i na południu (ok. Tarnowa i Przemyśla). Ponieważ jednak informacje, dotyczące dziurawca, nie dawały niekiedy pewności, czy właśnie o to ziele chodzi, pominęliśmy go na mapach zupełnie. (Rozpowszechnienie piołunu, olchy, drzew szpilkowych i jałowca ob. mapa I).</p>
+      <p>O ile wszystkie wymienione dotychczas rośliny posiadają w obrębie Polski — w charakterze obrzędowych świętojańskich — zasięgi mniej lub więcej ograniczone, choć nieraz bardzo wielkie, o tyle <i>brzoza</i> i <i>dąb</i> stanowią pod tym względem wyjątek. Coprawda posługują się niemi, zwłaszcza dębem, rzadko i sporadycznie, zato jednak w całej Rzeczypospolitej (za wyjątkiem może tylko niektórych, stosunkowo niewielkich części kraju). Możliwe, że tu i ówdzie stosowanie brzozy przez lnd na św. Jana nie ma głębszego znaczenia, lecz zostało zapożyczone od obrządków wczesnowiosennych (porówn. t. zw. »majenie« chat brzozami, które, jak wiadomo, bardzo wcześnie się rozwijają na wiosnę).</p>
+      <p>Do roślin, podanych na mapie II jako »inne«, zostały zaliczone: <i>rumianek</i> (poświadczony 32 razy), <i>mięta</i> (14), <i>rozchodnik</i> (12), <i>macierzanka</i> i <i>śčeberec«</i> (12=6+6), <i>chaber</i> (11), <i>dziurawiec</i> (10, w tem 3 niepewne), <i>tatarak</i> i <i>»kalmus«</i> (9), <i>kalina</i> (9), <i>krwawnik</i> (8), <i>wrotycz</i> (7), <i>ostróżka</i> (6), »<i>burkun</i>« (5), <i>rosiczka</i> i »<i>boża rosa</i>« (5), »bratčyk« (4), <i>centurja</i> (4), <i>kasztan</i> (4), <i>kąkol</i> (4), <i>podbiał</i> (4) etc.</p>
+      <p>Na podstawie różnych wskazówek można o licznych spośród tych »innych« ziół przypuszczać, że były uważane pierwotnie za czysto lekarskie, i tylko jako takie zbierano je na św. Jana; do apotropeicznych dołączono je wtórnie. Zresztą, ściśle mówiąc, w ogromnej ilości wypadków nie wiemy nawet, czy lud je istotnie za odwracające uważa; oczywiście bowiem zatykanie ich na św. Jana w strzechy samo przez się tego jeszcze nie dowodzi, a bliższych szczegółów informacje, jakie posiadamy, przeważnie nie podają.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

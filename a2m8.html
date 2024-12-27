@@ -5,26 +5,73 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Rośliny zatykane na św. Jana w strzechy, ściany itp., I
-    <br>
+    Rośliny zatykane na św. Jana w strzechy, ściany itp., I<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Mapa powyższa jest o tyle zupełnie wyjątkową w »Atlasie«, że podstawowy materjał do niej, zgromadzony zapomocą ankiety z 1930 r., został uzyskany nie — jak dla pozostałych — dzięki odpowiedniemu specjalnemu pytaniu, lecz ubocznie, przy paru pytaniach innych, a głównie przy pytaniu o jedną ze świętojańskich wróżb ze ziół. Chłopi mianowicie, zagadnięci np. o zatykanie ziół w ściany it. p. w celach wróżebnych, niejednokrotnie opowiadali o znanem im dobrze niewróżbiarskiem zatykaniu na św. Jana Chrzciciela różnych roślin w strzechy, ściany, za odrzwia, wrota..., albo o kładzeniu ich na okna etc. domów, obór czy też wogóle budynków. Zmapowanie tych, przypadkowo uzyskanych, wiadomości dało nadzwyczaj zajmujący obraz. Ponieważ jednak był on niepełny, więc wszelkiemi sposobami staraliśmy się o informacje uzupełniające. Dość gruntownie przerobiona literatura oraz obficie rozesłane listy do osób prywatnych, nanczycielstwa, Kół Krajoznawczych a nawet do niektórych starostw i t. d. przyniosły wcale znaczny plon. Na jego podstawie można już było przystąpić do opracowania mapy, a raczej paru map, względnie wyczerpujących zagadnienie.</p>
+      <p>Jak wynika z licznych, różnorodnych, pośrednich oraz bezpośrednich wskazówek, zaczerpniętych z terenu i z literatury, świętojańska praktyka zatykania wielu z przytoczonych niżej roślin w strzechy, za odrzwia i t. p. wszędzie w Polsce miała pierwotnie na celu zabezpieczanie dobytku etc. od złych mocy (przedewszystkiem od czarownic), grożących jakoby w noc świętojańską (porówn. też KLS II, 326 sq.; B. Stelmachowska, Rok obrzędowy na Pomorzu, 174 i n; W. VI, 782 i t. d.).</p>
+      <p>Dla nas szczególnie zajmujące jest, że pod względem jakości używanych roślin terytorjum Rzeczypospolitej ostro rozpada się na dwa obszary: pierwszy z nich obejmuje północny wschód, drugi — resztę kraju. Obszar płn.-wschodni jest nacechowany przez bezwzględną przewagę stosowania <i>pokrzywy</i> oraz wogóle roślin, których apotropeiczne własności są całkiem przejrzyste co do genezy (<i>pokrzywa</i> parzy: »czarownica ma się o nią poparzyć«; <i>jałowiec</i>, <i>szypszyna</i>, <i>oset</i> i t. p. kłują: »czarownica ma się o nie pokłuć«; <i>bagno</i> odurza: »czarownicy ma się odurzyć głowa« i t. d.). Spośród nielicznych, ogólnie biorąc, gatunków ziół, stosowanych szczególnie często na północnym wschodzie, tylko <i>paproć</i> — używana zresztą wyjątkowo i na zachodzie — jest niejasna co do swego odwracającego charakteru.</p>
+      <p>W przeciwieństwie do północnego wschodu pozostałą Polskę charakteryzuje używanie bardzo licznych roślin o mniej lub więcej ciemnych co do genczy własnościach apotropeicznych. Na samo czoło tych roślin wybijają się: <i>bylica</i> i <i>łopian</i>. Ogólne zasięgi obu wspomnianych ziół pokrywają się prawie dokładnie, choć jednak na środkowym zachodzie (ok. Ostrzeszowa, Częstochowy i Łodzi) ma przewagę <i>bylica</i>, a zaś na południowym wschodzie, na Rusi — <i>łopian</i>; na znacznym obszarze zachodniej, należącej do Polski, Małorusi dzień św. Jana bywa nawet wprost nazywany od <i>łopuchu</i>, t. j. <i>łopianu</i> »lwanem Łopusznym« lub podobnie (ob. np. Mat. XIII, 158; Pok. I, 201). W kierunku płd.-wschodnim zasiąg <i>bylicy</i> i <i>łopianu</i> wykracza poza granice Rzeczypospolitej; jeszcze w Hajsyniu za Bracławiem używany tam <i>łopian</i> jest zapewne bardzo popularny, skoro święto św. Jana nosi, jak na naszych kresach, nazwę: <i>Ivàn Łopuchàtyj</i> (D. Zelenin, Russ. Volkskunde, 371).</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 

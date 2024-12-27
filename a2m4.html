@@ -5,26 +5,73 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Przyczyny choroby u dzieci zwanej pleśniawki (soor)
-    <br>
+    Przyczyny choroby u dzieci zwanej pleśniawki (soor)<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Objaśnianie przyczyn pleśniawek przez włościan może służyć za »przykład szkolny« z zakresu ludowej etjologji (porówn. KLS II. 159 sq.). Różnorodność tłumaczeń jest tu uderzająca. Mapa uwzględnia oczywiście tylko te z nich, które się powtarzają: odpowiedzi indywidualne czy też — w obrębie Polski — zupełnie wyjątkowe i izolowane potraktowaliśmy łącznie jako »inne«. Zresztą i powtarzające się objaśnienia zostały na mapie z konieczności zsyntetyzowane: tak np. odpowiedzi typu: »(Pleśniawki) biorą się z żelaza (pp. 119, 122), jak dziecko żelazo do ust weźmie« (pp. 7, 8, 23, 105), albo »jak dziecko żelazo poliże« (p. 44), albo »jak mosiądz poliże« (p. 18) czy też wogóle »kiedy metal weźmie w usta« (p. 50), podano na mapie ogólnie pod »metal«.</p>
+        <p>Spośród »innych« przyczyn należałoby tu wymienić: przelęknienie, zbyt długie spanie, pragnienie, gorąco, chore zęby, »ślinienie«, częste ssanie piersi, »mączne pieluchy«, nieodpowiednie zachowanie się matki w czasie ciąży (gdy ciężarna podźwignie się: p. 62; gdy spluwa, kiedy jej się coś nie podoba: p. 72; gdy, gotując strawę, zrzuca szumowiny i po nich depcze: p. 49; gdy kopie kota: p. 75), czary (tylko p. 45), uroki (tylko p. 27) i t. d., i t. d. (porówn. też KLS II, 196-7). W p. 54 myślą podobno nawet wieśniacy, że choroba, o jaką tu chodzi, fruwa w powietrzu i opada w postaci jakiegoś puchu.</p>
+        <p>Zwraca uwagę, że najbardziej przesądne z tych »innych« przyczyn spotykamy na wschód od Wisły, podczas gdy na zachodzie wyraźnie przeważają tłumaczenia racjonalne lub do nich zbliżone.</p>
+        <p>Jednem z ciekawszych objaśnień spośród uwzględnionych na mapie jest to, które dopatruje się powodu sooru we wzięciu przez dziecko grzebienia do ust. Zasiąg tego oryginalnego przesądu, obejmujący płn.-zachód, płd.-zachód, środek i płd.-wschodnie kresy Rzeczypospolitej, a więc naogół terytorja podpadające często nowszym falom kulturalnym, może wskazywać na jego niezbyt wielką dawność, jednakowoż wyspowy charakter zasięgu przemawia za tem, że bądźcobądź nie mamy tu do czynienia ze zbyt nowem zjawiskiem. Znalazłoby to też oparcie w powtarzaniu się tego samego tłumaczenia nietylko w Czechach z jednej, ale i u Rumunów Bukowiny z drugiej strony (O. Hovorka u. A. Kronfeld, Vergl. Volksmedizin II, 665, 666). Objaśnić ten przesąd można będzie dopiero wtedy, kiedy zostaną zebrane szczegółowsze dane na terytoriach sąsiadujących z Polską. Narzuca się coprawda przypuszczenie, iż wziął on początek na obszarach słowiańskich, i to na tych, co wzorem Niemców nazywają lub nazywały pleśniawki <i>grzybem</i> czy <i>grzybami</i> (ob. KLS, 196). Brzmienie mianowicie wyrazu <i>grzebień</i> zbyt przypominało matkom, troszczącym się o zdrowie niemowlęcia, chorobę <i>grzyb</i>, <i>grzyby</i>, aby nie mógł powstać naprzód zakaz pozwalania dziecku na kładzenie grzebienia do ust, a następnie zajmujący nas pogląd. Jednak w świetle dotychczasowych materjałów zasiąg nazwy <i>grzyb</i>, <i>grzyby</i>, nie zdaje się — wobec zasięgu przesądu o grzebieniu — popierać takiej genezy.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

@@ -5,26 +5,74 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Zasiąg tradycji o demonie zwanym rusałka lub kozytka
-    <br>
+    Zasiąg tradycji o demonie zwanym rusałka lub kozytka<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Jak wiadomo, nazwa <i>rusałka</i> została urobiona — prawdopodobnie na Małorusi gdzieś w początkach 2. połowy ub. tysiącolecia — od nazwy pewnych uroczystości wiosennych, a w szczególności Ziel. Świątek, w czasie których rusałki bardzo często mają się ukazywać i napastować wieśniaków (porówn. nazwę <i>południcy</i>, wziętą od <i>południa</i>). Owe uroczystości wzgl. Ziel. Świątki albo cały tydzień zielonoświąteczny nazywano na Bałkanach czy na Rusi <i>rusalnemi</i>, bądź też, posługując się rzeczownikiem, — <i>rusaljami</i>. Ostatnia postać jest pierwotniejsza i wywodzi się wprost od greckiego wzgl. łacińskiego terminu <i>ρονσάλια</i>, <i>rosalia</i> 'pewna uroczystość wiosenna'.</p>
+      <p>Z Bałkanów (z Bułgarji) tak niejasne mamy wiadomości o rusałkach, że np. M. Arnaudov wogóle nie jest pewien, czy tradycję o nich można uważać za istotnie ludową (SbNU XXXIV, ł64, 210). Natomiast Ruś, zwłaszcza południowa, zna je dobrze. Na Białoruś wierzenia o nich przedostały się zapewne z południa 2-ma drogami: zachodnią, prowadzącą szerokim szlakiem przez małoruskie porzecze górn. Prypeci, i wschodnią, zgodną ze szlakiem Dniepru. W centrum Polesia, w okolicy wsi Dereszewicze nad Prypecią, jeszcze w r. 1914, jak to sam stwierdziłem, ludność tak mało była obyta z popularnem znaczeniem wyrazu <i>rusałka</i>, że przypisywała temu słowu rodzaj męski (mówiono: <i>toj rusàłka</i>) i określała niem zwykłego męskiego »topca« (t. j. »topielca« w charakterze 'wodnego demona'). Na Wielkorusi znają rusałkę tylko na południu, t. j. od strony Małorusi, i zachodzie, od Białorusi.</p>
+      <p>W obrębie Polski zasiąg tradycji o rusałce nosi charakter jakgdyby cofającego się. Czy jednak nie jest to tylko pozór? Wszak w rdzennej Polsce rusałki zawsze były ludowi obce. Pozatem ogłoszone dotychczas bardzo nieliczne i poczęści niepewne ślady ich ewentualnego dawniejszego występowania na ruskiem południu Rzeczypospolitej noszą raczej cechy nowszych wtrętów (na mapie ich nie uwzględniono). Brak mi tu coprawda miejsca, aby dowodzić, dlaczego za obce i względnie późne uważam takie wersje, jak ogłoszona przeze mnie w Mat. XIII, 170 i przez Wł. Szuchiewicza w »Huculszczyźnie« IV, 262. Ogólnikowe wiadomości z » Rusi galicyjskiej« czy z »Galicji wschodniej«, podane w W. VII, 601, w ukraińskiem piśmie »Zoria«, 1886, 270 (= J. Talko-Hryncewicz, »Zarysy leczn. lud.«, 107), są bardzo podejrzanej wartości. W każdym razie obszerna 1 źródłowa monografja V. Hnatiuka, umieszczona w EZ, XV, XXXIII-IV, choć uwzględnia rusałki w tytule jednego z rozdziałów (1. c. XZXIII, 191—198) nie podaje z Galicji ani jednej o nich wiadomości.</p>
+      <p>Lud rozmaicie objaśnia pochodzenie rusałek; najczęściej słyszymy, że demonem tym staje się kobieta, zmarła jako dziewczyna (t. zn. jako niewydana zamąż, pp. 60, 80, 84, 87, 88, 90), albo — dziewczyna, która »zapiła się na śmierć« w czasie wesela (pp. 79, 80, 81), która się powiesiła (pp. 69, 73) utopiła (pp. 68, 69, 73) lub zabiła urodzone przez się dziecko (pp. 69, 73). W pp. 85, 86, 89, 129 opowiadano też, że rusałkami stają się ludzie (wzgl. dziewczyny) zmarli (ew. urodzeni) ok. Zielonych Świątek (w t. zw. rusalnym tygodniu).</p>
+      <p>Ponieważ najpospolitszym sposobem, w jaki rusałka ma się pastwić nad ludźmi, jest dręczenie ich na śmierć przez łaskotanie, więc tu i owdzie lud nazwał tę mityczną istotę od wspomnianej czynności; tak i na naszej mapie występuje u części Białorusinów <i>kozytka</i> a właściwie <i>kazỳtka</i>, któryto termin utworzono od <i>>kazỳtać</i> 'łaskotać'.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 

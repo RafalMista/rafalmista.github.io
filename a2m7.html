@@ -5,26 +5,72 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Demon sporzący dobytek
-    <br>
+    Demon sporzący dobytek<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Na dokładne objaśnienie powyższej mapy bez wątpienia zabrakłoby tu miejsca. Dlatego odsyłam czytelnika po ogólną orientację do KLS II, 666-678, a po szczegóły — do przytoczonej niżej literatury, uwzględnionej przy opracowywaniu mapy, oraz do książki H. Máhala, »Nákres slovanskeho bajesloví«, 89 sq., 152-150. Tu podam jedynie parę najważniejszych uwag.</p>
+      <p>Naogół tylko gdzieniegdzie na Polesiu dochowały się jeszcze w obrębie Polski ostatnie względnie czyste ślady prastarej wiary w duchy domowe, co mają jakoby przebywać w każdem obejściu i nietylko sporzyć dobytek, lecz wogóle opiekować się danem gospodarstwem. Pozatem wszędzie już wtargnęły od północy i zachodu nowe wierzeniowe wątki, przeobrażające dawne pojęcia i tworzące przez to szereg nowych, coprawda dość sobie wzajemnie bliskich postaci demonicznych, różniących się głównie nazwami. Wspólnemi ich cechami są: 1) bardzo intensywnie występujący motyw mnożenia bogactwa (w pieniądzach, zbożu i t. d.), 2) przebywanie tylko u niektórych ludzi: u bogaczów (szczególnie o ile ich majątek dziwnie szybko wzrasta), dalej u czarownie i czarowników. Pozatem licznym z tych demonów przypisuje lud częste ukazywanie się w postaci ptaka, np. w kształcie zbiedzonego kurczęcia (skrzat, plon i t. d.: rzadziej — chobołd; wyjątkowo — inkluz). O wielu opowiada też, jakoby, znosząc bogactwo, leciały przez powietrze i świeciły się wtedy lub iskrzyły (głównie demony, występujące na północnej Białorusi, na Mazowszu, Pomorzu i w Wielkopolsce). Wcale pozatem pospolicie słyszymy o sztucznem wylęganiu demona z niezwykłego jaja kurzego lub innego oraz o pielęgnowaniu go przez ludzi czy hodowaniu w jakiem ukrytem miejscu domu (stąd młrs. nazwa <i>chòvaneć</i> lub <i>hodùvaneć</i>).</p>
+      <p>Część Rusi przeniosła na te nowe postacie demoniczne dawną nazwę ducha domowego (<i>domovìk</i>: i t. p.). Niektóre inne nazwy, jak <i>aitvaras</i>-<i>atwor</i>, <i>kołbuk</i>-<i>kłobuk</i>-<i>chobołd</i> i <i>skrzat</i> są pochodzenia germańskiego, zaś wyraz <i>inkluz</i> — dosłownie '(zły duch) zamknięty w czemś (np. pieniądzu)' wzięliśmy z łaciny (cf. <i>includo</i>, <i>inclusus</i>) Na szczególnie baczną uwagę zasługuje zasiąg <i>plonka</i>, gdyż przerzuca się do Łużyc (dln.-łuż. <i>plon</i>).</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

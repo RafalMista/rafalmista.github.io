@@ -5,26 +5,71 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Nazwa zanikającego księżyca
-    <br>
+    Nazwa zanikającego księżyca<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Objaśniając mapę »Nazwa księżyca na nowiu«, podniosłem, że wg nieuwzględnionych na niej danych, zebranych przez prof. Nitscha i przez Redakcję OL, terminu <i>młody miesiąc</i>, <i>młodzik</i> używa lud także na płd.-zachodnim krańcu Polski. W ten sposób ogólny zasiąg owej nazwy w Polsce jest charakterystycznie przerwany i wybitnie krawędziowy. Mapka, umieszczona na odwrotnej stronie tej karty, przedstawiająca zarówno nasze dane, jak i wiadomości, uzyskane przez prof. Nitscha oraz Redakcję OL, doskonale to uwidocznia. Znajduje zaś ona piękny odpowiednik w równie krawędziowym i podobnie przerwanym zasięgu nazwy księżyca zanikającego: <i>wietek</i> (pol. <i>vetek</i>, błrs. <i>vòtak</i> i t. p.; mapa główna podaje wyniki naszej ankiety oraz nieco danych z literatury; mapka dodatkowa obejmuje prócz tego dane prof. Nitscha i Redakcji OL).</p>
+      <p>Patrząc na mapę główną, można z niej z wielkiem prawdopodobieństwem odczytać dzieje terminu, określającego w Polsce zanikający księżyc. Nazwa ta początkowo niewątpliwie na całym lub prawie całym obszarze, objętym dziś granicami polskiego państwa, opierała się o pradawny, u nas już obecnie zarzucony wyraz słowiański <i>vetъchъ</i> 'stary; z biegiem czasu została jednak zmodernizowana, oparłszy się o wyraz <i>starъ</i>, wypierający wogóle w żywym języku coraz bardziej wyraz <i>vetъchъ</i>. Ale i ten nowszy termin nie ostał się — wraz z dawnym — przed dalszemi zmianami; zwłaszcza, na pewnej części szlaku: Polska zachodnia—Małopolska—Podole, na którym najczęściej obserwujemy inowacje w zakresie rzeczy i nazw, obie dotychczas nam znane nazwy ustąpiły przed innemi, bądź zupełnie nowemi, bądź też takiemi, co dawniej miały prawdopodobnie wartość terminów szerszych albo obocznych wzgl. podrzędnych. Tu należeć mogą nazwy <i>schód</i>, <i>zachód</i>, <i>ostatek</i>, <i>ostatnia kwadra</i> i t. p.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
@@ -64,7 +109,7 @@
         };
         legend.addTo(map);
 
-        //map.addLayer(points);
+        map.addLayer(points);
 
         var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a2m1.png', [[41.865452773, 12.289834660], [59.024906993, 31.767066272]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);

@@ -5,26 +5,72 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Zasiąg jednej z wróżb ze ziół w dniu św. Jana
-    <br>
+    Zasiąg jednej z wróżb ze ziół w dniu św. Jana<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>W niektórych okolicach Bułgarji, Serbochorwacji, Słowenji, Słowaczyzny, Czech i, zdaje się, Niemiec z jednej, a zaś płn.-wschodniej (sowieckiej) Białorusi, Łotwy, Estonji i płn.-zachodniej Wielkorusi z drugiej strony uprawia włościaństwo zajmującą wróżbę świętojańską ze ziół. W typowych wypadkach, znanych z południa i północy Słowiańszczyzny, wróżenie to zasadza się na wyznaczeniu dla każdego z domowników danego obejścia po jednym kwiecie czy ziole jednakiego dla wszystkich gatunku i na zatknięciu wyznaczonych ziół w ścianę chaty, za belki pułapu etc. lub na położeniu ich na oknie i t. p.: tak umieszczone rośliny muszą przetrwać świętojańską noc, a nazajutrz bada się ich wygląd i odpowiednio do niego wróży odnośnym osobom o ich przyszłej doli (o zdrowiu, szczęściu i t. p.; ob. KLS II, 400 sq.).</p>
+      <p>Opisana wróżba nie jest obca i Polsce, gdzie przytem posiada bardzo charakterystyczny zasiąg: liczniejsze jej ślady występują tylko na północy wzgl. na północnym wschodzie oraz na przeciwległym cyplu płd.-zachodnim. Jest to typ zasięgu, który, biorąc naogół, cechuje zanikające zjawiska kulturalne. Jakoż i w danym wypadku na przestrzeni, dzielącej południowy zachód od północnego wschodu, spotykamy tu i owdzie w ludowej tradycji mniej lub więcej niepewne wersje, zdające się przemawiać za tem, że i na centralnych obszarach Polski wspomniana wróżba była niegdyś znana.</p>
+      <p>Odnośnie do płd.-wschodu posiadamy narazie tylko niejasną wiadomość, podaną przez J. Talko-Hryncewicza z okolic położonych coprawda już w Rosji, ale wpobliżu granic Rzeczypospolitej. Na str. 415 jego »Zarysów lecznictwa ludowego na Rusi południowej« czytamy mianowicie, iż według mieszkańców Nowej Uszycy (wzgl. okolic tego miasteczka) »jeżeli kwiaty roślin kurzej ślepoty, dziewanny lub <i>bohatynki</i> powiędną w domu, to w nim ktoś umrze«. Informacja ta jest zbyt niedokładna, by na jej podstawie można było wyciągnąć jakiś pewny wniosek; zaznaczę więc tylko, że <i>bohatynka</i> (<i>Erigeron acer</i> L.) to właśnie ziele zupełnie pospolicie używane na ogromnych obszarach Biało- i Wielkorusi do opisanej powyżej wróżby świętojańskiej.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

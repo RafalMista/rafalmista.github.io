@@ -5,26 +5,71 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Zasiąg wróżenia z łyżek
-    <br>
+    Zasiąg wróżenia z łyżek<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Wł. Szuchiewicz podaje z Huculzezyzny m. i., co następuje: w wigilję Nowego Roku »gaździna przypiera na ławie o ścianę łyżki trzonem nadół, przyczem nazywa każdą z nich imieniem osób z rodzeństwa: jeżeli która z tych łyżek przewali się, wróżą z tego, że osoba nią oznaczona umrze« (Szuch., III, 202). Takie i tym podobne wróżby znane są też w innych stronach Mało-, Biało- i Wielkorusi, a pozatem również w Jugosławji (np. w Czarnogórzu etc.), w niemieckiej Austrji (w górnej Styrji) i t. d. W Polsce zasiąg tego typu wróżenia jest wyraźnie cofający się, reliktowy. Zazwyczaj wróżą u nas w ten sposób ruscy włościanie w wigilję Bożego Narodzenia lub Nowego Roku po obrzędowej wieczerzy, t. zw. kutji. O ile wolno wnosić z bardzo skąpych wskazówek, zwykle przytem łyżki zostawiają na noc na stole, bądź wprost położone na jego powierzchni (m. i. pod obrus), bądź też włożone do misy lub o nią oparte; oglądają je dopiero nazajutrz. Gdzieniegdzie na Polesiu (p. 89) uprawiają tę wróżbę po dorocznych wieczerzach zadusznych (dziadach). Ponieważ zaś i wieczerze w wigilję Bożego Narodzenia czy Nowego Roku są co do genezy niemal napewno zadusznemi, oraz ponieważ zarówno u nas, jak i gdzieindziej istnieje wierzenie, że pozostawionemi na noc łyżkami spożywają przeznaczony dla nich pokarm dusze zmarłych, więc wróżba, której poświęciliśmy tę mapę, najprawdopodobniej polegać miała pierwotnie — jak tyle innych — na interwencji świata zmarłych; innemi słowy była ona — jak mybyśmy powiedzieli — znakiem z zaświatów, rozmyślnie wywołanym przez mieszkańców danej chaty.</p>
+      <p>Z rdzennej Polski znamy tylko ślady opisywanej wróżby, przyczem część tych śladów jest bardzo niepewna. Stosunkowo najdokładniej odpowiedzieli na odnośne pytanie włościanie z p. 25, wg których dawniej na Nowy Rok »młodzież tak wróżyła; to miało być jakieś szczęście, jak było więcej nakrytych, a jak odwróconych dogóry więcej, to miało być nieszczęście, niepomyślny rok«.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 

@@ -5,26 +5,74 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Dwugatunkowość borsuka, jeża i kreta
-    <br>
+    Dwugatunkowość borsuka, jeża i kreta<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Śród wiadomości z zakresu ludowej wiedzy przyrodniczej znajdujemy m. i. wersję, dającą się ująć w następującą schematyczną formułkę: »Między dzikiemi zwierzętami znajduje się takie, którego są 2 gatunki; jeden ma pysk podobny do świńskiego ryja, drugi — do psiej mordy«. Częstokroć wersja ta bywa nieco pełniejsza i głosi jeszcze, że pierwszy z 2 wymienionych gatunków bywa jadany, drugi zaś - nie.</p>
+      <p>Otóż do najbardziej uderzających faktów etnograficznych należy okoliczność, iż przytoczona wersja zachowuje się w obrębie ludowej tradycji zupełnie tak, jak pierwszy lepszy mityczny, baśniowy czy podobny wędrowny wątek. Na jednych mianowicie obszarach stosuje ją lud do borsuka; na innych — do jeża, albo — zarówno do borsuka, jak i do jeża: na jeszcze innych — do kreta. Tylko tu i ówdzie na odpowiednie pytanie nie podawali nam chłopi wersji typowej, lecz wyjaśniali rozważnie, jako mordę psią ma borsuk, a zaś świńską — jeż lub nawet dzik (ob. KLS II, 69 sq., gdzie próbuję też skomentować obchodzącą nas wersję). Wyjątkowo w p. 131 opowiadano o niedźwiedziach, że są między niemi takie, co mają mordę psią, i tych »nie można jeść«.</p>
+      <p>Przekonanie o dwugatunkowości bądź jeża, bądź borsuka podziela lud zachodnioeuropejski. Więc o 2 gatunkach borsuka: świńskim i psim, słyszymy np. w Niemczech, we Francji i we Włoszech (Hwb. d. d. A. II, 130); o takichże 2 gatunkach jeża mówi nam lud niemiecki (ib. IV. 668/9). Rzeczy te wymagają oczywiście wyjaśnienia na szerszem tle, a dać je mogą jedynie przyrodnicy. Nieraz się przecież słyszy od ludu o paru lub kilku gatunkach czy odmianach danego zwierzęcia, co potem nauka potwierdza. Tak i jeż ma występować u nas jako <i>Erinaceus europaeus</i> i <i>E. roumunicus</i>. W każdym jednak razie żadne badania przyrodników nie usprawiedliwią ludu, stosującego jedną i tę samą wiadomość na pewnych obszarach wyłącznie do borsuka, na drugich zaś wyłącznie do jeża. To jest przecież — w świetle danych etnogeografji — oczywisty nonsens, dostarczający jednego ze świetnych dowodów biernego i bezkrytycznego zachowania się wieśniaka wobec przeróżnych wiadomości, podawanych z ust do ust i wędrujących sobie samopas tam i sam przez wsie oraz miasteczka.</p>
+      <p>Wersja o »świńskim« i »psim« borsuku dała tu i owdzie powód do dalszych, całkiem już fantastycznych uzupełnień. Tak np. w p. 31a opowiadano, że borsuk, co ma mordę psią, żyje mięsem, zaś ten, co ma świński ryj, ryje po ziemi, żywiąc się »korzonkami«. W p. 55 podano, że borsuk, którego można jeść, ma nietylko świński pysk, ale i świńskie nogi. Dawniej (r. 1910) zanotowałem od chłopa z okolic Brzeżan we wsch. Galicji wiadomość o borsukach, mających »na przednich nogach racice, jak świnie, a na tylnych pazury, jak psy« (Mat. XIII, 165). Podobnie i »świński« jeż dał asumpt do przesądu, wedle którego jeże mogą się zamieniać w świnie (Zb. XIV, 20-1)...</p>
+      <p>Oto są doskonałe przykłady kształtowania się przyrodniczej wiedzy ludu. A do niezbyt dawna bardzo podobnie rozwijała się przecież i wiedza warstw oświeconych.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 

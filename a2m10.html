@@ -5,26 +5,75 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Rośliny zatykane na św. Jana w strzechy, ściany itp., III
-    <br>
+    Rośliny zatykane na św. Jana w strzechy, ściany itp., III<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p><i>Uwagi porównawcze do tekstów objaśniających mapy I i II.</i> — Używanie <i>pokrzywy</i>, jako środka apotropeicznego przeciwka wiedźmom w noc św. Jana lub w noce podobne, znamy z Białorusi sowieckiej, z Polesia kijowskiego etc., a także z Bułgarji, Jugosławji, z krajów wschodnio-niemieckich i t.d.; na tych samych mniej więcej obszarach posługuje się lud różnemi <i>roślinami kolącemi</i>. — Stosowanie <i>paproci</i> w charakterze środka specjalnie świętojańskiego, zabezpieczającego od czarów, znajduje uderzający odpowiednik we... Francji (!). — <i>Bylica</i> na ogromnych obszarach Europy słynie od zamierzchłych czasów jako ziele lecznicze i apotropeiczne; w związku z datą św. Jana była ona bardzo wzięta w Czechach, w Niemczech etc.; m. i. używają jej także w tym związku w Bułgarji. — Zato <i>łopian</i>, jak i ogromny zasiąg jego używalności w Polsce i na Małorusi, przedstawiają się w tymże związku zupełnie zagadkowo (KLS II, 328); narazie tyle tylko wiemy, że takie albo inne, naogół dość nikłe odwracające funkcje magiczne pełni to ziele zrzadka u ludu płn.-wschodnio-niemieckiego na pograniczu z płn. Polską oraz gdzieniegdzie w płd. Niemczech, a także podobno w Bośni i Albanji; szereg autorów, specjalnie traktujących o botanicznych przesądach, milczy o niem zresztą zupełnie; może była to rpślina pierwotnie tylko lecznicza (?; ob. też KLS II, 222). — O <i>lipie</i> patrz KLS, II, 532 sq.; w związku z datą św. Jana występuje ona w dolnej Austrji; w analogicznych okolicznościach widzieć ją można w Czechach. — <i>Bez</i> jako apotropaion cieszy się wielkiem uznaniem w zachodniej Europie; na wschodnich obszarach Niemiec używają go m. i. z okazji daty 1 maja (analogicznej pod względem wierzeniowym do św. Jana), a nawet i z okazji św. Jana. — O <i>piołunie</i> w związku ze św. Janem mamy dane z rzeczyckiego Polesia; o tej samej roślinie jako wogóle zabezpieczającej od czarów — z płn. i płd. Niemiec. — <i>Olchę</i> stosuje się dla odwrócenia szkodliwych wpływów w noc 1 maja w Belgji i Turyngji. — <i>Klon</i> wzgl. <i>jawor</i> pełnią wyraźnie odwracającą funkcją m. i. w niektórych stronach płn. Niemczech oraz Słowiańszczyzny bałkańskiej (gdzie <i>jawor</i> chronić ma od t. zw. »żmijów«, t. j. smoków, i od samowił). — Dla używania <i>leszczyny</i> w dniu św. Jana znajdujemy pewne odpowiedniki w Czechach; dla stosowania jej wogóle w charakterze apotropeicznym — w Niemczech etc. — <i>Jesion</i> wykorzystywany bywa na św. Jana przez niektórych Słoweńców i Hiszpanów, a także podobno przez górali irlandzkich i szkockich; pozatem służy wogóle jako bardzo wzięty środek ochronny (głównie jednak przeciwko jadowitym gadom, a nie czarom i demonom; chociaż np. zdaniem Słowian bałkańskich odstrasza — podobnie jak jawor — samowiły i inne demony). — Z roślin szpilkowych najważniejszy jest tu dla nas <i>jałowiec</i>, posiadający duże znaczenie w magji wielu ludów Eurazji (KLS LI, 308) — Ogromnie wziętem świętojańskiem zielem apotropeicznem jest w Europie środkowej i zachodniej (Czechy, Niemcy, Francja etc.) <i>dziurawiec</i>. Brzoza znów wcale obficie stosowana bywa w Niemczech 1 maja dla ochrony obór od odwiedzin czarownic. Wreszcie gałązkami <i>dębu</i> broni się w noc świętojańską m. i. lud płn.-zachodniego Górnego Sląska, należącego do Niemiec (pow. Nisa).</p>
+      <p>Oczywiście uwagi powyższe, chociaż oparte przeważnie na najnowszych zestawieniach znakomitego znawcy wierzeń o roślinach, H. Marzella, są bądźcobądź zbyt fragmentaryczne i niedokładne, aby mogły nam posłużyć do ostatecznego wyjaśnienia zagadnień, związanych z świętojańskiemi roślinami odwracającemi, występującemi w Polsce. Z drugiej strony i nasze mapy z całą pewnością nie dają ostatecznego obrazu zasięgów obchodzących nas roślin w obrębie Rzeczypospolitej. W szczególności obszary występowania <i>leszczyny</i>, <i>lipy</i>, <i>wierzby</i>, a może i <i>drzew szpilkowych</i> ulegną zapewne zmianom przy dalszych badaniach.</p>
+      <p>W każdym razie zasadniczy fakt rozbicia się Polski na prymitywny pod względem tylu zjawisk ludowej kultury płn.-wschód i dotkniętą przez tak różnorodne wpływy resztę kraju pozostanie nienaruszony. Zapewne też trwałą — mimo wszystko — naszą zdobyczą okaże się nawiązywanie zasięgów <i>olchy</i> i <i>bzu</i> do Zachodu. Również obfite występowanie <i>klonu</i> na Pomorzu nie inaczej da się pewnie wytłumaczyć, jak tylko w związku z używaniem tejże rośliny w północnych Niemczech. <i>Jawor</i> wreszcie i <i>jesion</i> w Karpatach wskazywać się zdają swemi zasięgami na południe, ku Bałkanom, gdzie — jak widzieliśmy — obie te rośliny są uważane za antydemoniczne.</p>
+      <p>Na innych mapach »Atlasu« można niekiedy stwierdzić nawiązywanie płd.-zachodniej krawędzi Polski pod względem danych zjawisk z zakresu kultury ludowej do obszarów płn.-wschodnich; przyczem chodzi w takich wypadkach o zgodność starszych elementów kultury, które wszędzieindziej w Polsce całkiem lub prawie całkiem już zaginęły. Otóż i co do apotropeicznych roślin świętojańskich widzimy, zdaje się, rzecz podobną: stosowanie kłujących drzew szpilkowych i jałowca na płd.-zachodzie może być przecież uważane za wcale dobry odpowiednik dla używania tegoż jałowca i różnych kolących ziół, a także parzącej pokrzywy na płn.-wschodzie.</p>
+      <br>
+      <p>Uwaga. Dwu- lub wieloznaczne i gwarowe nazwy roślin, podane w źródle bez bliższego określenia, powtórzyliśmy za źródłem dosłownie, ujmując je w cudzysłów.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

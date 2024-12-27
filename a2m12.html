@@ -5,26 +5,74 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Obchodzenie wsi z zielonem drzewkiem lub gałęzią
-    <br>
+    Obchodzenie wsi z zielonem drzewkiem lub gałęzią<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Ścięte zielone drzewko albo wielka gałąź lub nawet całkiem mała gałązka odgrywają w różnych obrzędach pierwszorzędną rolę. Widzimy je zarówno z okazji obchodów dorocznych (wiosennych, letnich, zimowych), jak i rodzinnych (weselnych, pogrzebowych) lub innych (np. w związku z ukończeniem budowli i t. p.). Ogromne rozpowszechnienie używalności drzewek czy gałęzi podczas obrzędów nie zostało dotychczas objaśnione w sposób wystarczający. W świetle danych nowszej porównawczej etnografji jedno jest tylko zupełnie pewne: drzewko czy gałąź niejednokrotnie posiadają albo posiadały dawniej charakter kultowo-liturgiczny; mianowicie różne ludy wyobrażają sobie lub wyobrażały, że — m. i. w trakcie obrzędu — na drzewku czy na gałęzi wypoczywają bóstwa wzgl. dusze zmarłych, do których wznosi się modły i którym składa się ofiary (cf. KLS II, $$ 423 i n.).</p>
+      <p>Z chwilą gdy dany obrzęd zatracał pierwotne znaczenie, a w szczególności gdy okazywanie bóstwom i duszom kultu pod drzewami czy drzewkami wychodziło z użycia, pozostawała już tylko martwa forma obrzędowa, i pod nią — jak to często bywa — nieraz podkładano nową treść.</p>
+      <p>Ilekroć mamy do czynienia z drzewkiem lub gałęzią, używanemi podczas obchodów, musimy brać pod uwagę wszystko, co wynika z powyższych uwag. Nie znaczy to jednak bynajmniej, aby kultowo-liturgiczny charakter drzewka wyczerpywał całą jego wartość w oczach różnych ludów. Nie ulega przecież najmniejszej wątpliwości, że i w magji drzewko czy gałąź mają swoje wielkie znaczenie. Wyraźnie zaznacza się to zwłaszcza wtedy, gdy w grę wchodzi drzewko czy gałąź, nacechowane przez odnowione życie, t. zn. pokryte nowemi latoroślami, pąkami albo liśćmi. Otóż bardzo jest możliwe, że panujący w zachodniej Polsce wczesnowiosenny zwyczaj obnoszenia zielonego drzewka czy gałęzi, oddawna, wzgl. od samego początku swego istnienia jest praktyką magiezną, mającą na celu (jak to już w r. 1886 pisał I. Klatecki) »przyczarowanie i przywołanie przyrody wiosennéj z całą jéj wegetacyją i płodnością«. Coprawda wnosi się tu do wsi i obnosi po obejściach nie »świeżą, rozwijającą się gałązkę lub drzewko«, jak błędnie twierdzi W. Klinger (Doroczne święta ludowe, 1931, 12) lecz pozbawioną jeszcze nowej zieleni sosenkę lub — rzadziej — inne iglaste drzewko, jednak to może być szczegół drugorzędnego znaczenia; po pierwsze bowiem zawszezielone drzewko iglaste mogło tu wtórnie zastąpić drzewko wiosenne z rozbudzonem weń życiem: powtóre zaś taka iglasta, wiecznie zielona, <i>wszeżywa</i>, jak mówi podobno lud, roślina mogła od samego początku pełnić funkcje rośliny nowoożywionej czy też wogóle rośliny żywej w przeciwieństwie do pozornie martwych zimą i na przedwiośniu roślin liściastych. W każdym razie kwestja ta, jak i kwestje, związane z obnoszeniem liściastych drzewek na św. Jana oraz iglastych na Boże Narodzenie, wymagają nieco bliższych roztrząsań, na które tu nie miejsce.</p>
+      <p>Wczesno- lub późnowiosenne obrzędowe wnoszenie do wsi wzgl. obnoszenie po zagrodach zielonego drzewka albo gałęzi spotyka się lub spotykało dawniej nietylko w Polsce, lecz również na Morawach i w Czechach oraz w niektórych prowincjach dzisiejszych Niemiec, Rosji europejskiej i syberyjskiej etc. (ob. np. I. Klatecki, Nowe lato, 1886; Č. Zibrt, Staročeské výroční obyčeje, 1889, 53 i n.; E. V. Aničkov, Vesennjaja obrjadoyaja pĕsnja, 1903, 122 sq.; A. Makarenko, Sibirskij narodnyj kalendar', 1913, 167, 170/1; K. Brunner, Ostdeutsche Volkskunde, 1925, 217 i t. p.: pozatem ob. znane dzieła Mannhardta, Frazera i in.).</p>
+      <p>Ze szczegółów wczesnowiosennego obrzędu, zwanego <i>gaik</i>, <i>maik</i> lub <i>nowe latko</i>, zasługują na uwagę następujące: 1) drzewko wiosenne niemal z reguły obnoszone jest przez same tylko dziewczęta; 2) po wstąpieniu do danej zagrody dziewczęta śpiewają odpowiednią pieśń, obracając — jak podano w niektórych źródłach — drzewkiem wkoło; 3) termin wczesnowiosennego obchodu przypada na zapusty (nad Notecią), okres wielkiego postu (pospolicie na Śląsku i w Poznańskiem), drugi dzień Wielkanocy (w Polsce Środkowej i w paru wsiach Śląska).</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

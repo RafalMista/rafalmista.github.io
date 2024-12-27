@@ -5,26 +5,74 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Obchód wiosenny z ptakiem (kurem)
-    <br>
+    Obchód wiosenny z ptakiem (kurem)<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Wiosenny powrót ptactwa zdawna uderzał nieoświecony umysł i był punktem wyjścia niektórych magicznych praktyk. Odwracając, jak to często bywa, przyczynę i skutek, sądziły ludy północy, że to ptaki wędrowne »przynoszą« wiosnę. Wobec dokuczliwości zaś zimy, więżącej chłopów w ciasnych, zadymionych chałupach i każącej im żyć z zapasów, rozwinęło się stąd w dalszym ciągu — obok »wołania« upragnionej wiosny — także »wołanie«, a nawet magiczne kreowanie wiosennego ptactwa. Tak więc, powiedzmy, na ogromnych obszarach Słowiańszczyzny wschodniej (włącznie z Syberją), gdzie »wołanie« wiosny odbywa się z wielkim pietyzmem, istnieje m. i. zwyczaj wypiekania na przedwiośniu skowronków z ciasta; ze skowronkami temi wstępuje się np. na dachy domostw i woła, rzucając je niekiedy w powietrze: »Skowronki, skowroneczki, przylećcie do nas, przynieście nam lato ciepłe, zabierzcie od nas zimę chłodną; nam chłodna zima dokuczyła, ręce, nogi odmrozila«.</p>
+      <p>Na południu Europy obrządek, analogiczny co do myśli przewodniej, oddawna inną posiada postać. W Nowogrecji obnosi się na przedwiośniu (1/III) po domach jaskółkę wyrobioną z drzewa i, ustawicznie okręcając ją na podstawce, śpiewa się: »Jaskółka, jaskółka powraca; powraca z białego morza...«. Podobny zwyczaj chodzenia wiosną ze sztuczną jaskółką i pieśniami poświadczono dla wysp Rodosu i Samosu już w starożytności. Również w dzisiejszej Macedonji odprawiają dzieci 1/III obchód z drewnianą jaskółką. Ogólnie dla Bułgarji. a pozatem także dla Ukrainy podaje ten zwyczaj A. Afanasjev*, twierdząc, że na Ukrainie zamiast jaskółki obnoszą też skowronki z ciasta (byłaby to forma przejściowa do obrzędu opisanego powyżej).</p>
+      <p>W Polsce — nie licząc wypiekania na przedwiośniu lub wczesną wiosną ptaków z ciasta (m. i. kukułek, jaskółek, bocianów etc.) i obdarowywania niemi dzieci, oraz nie licząc pewnych innych zwyczajów lokalnych — odpowiednie praktyki z pozoru nie istnieją, wyjąwszy może obnoszenie czy obwożenie sztucznego bociana, znane nam z paru okolice Mazowsza. Jednak już w r. 1903 E. Aničkov słusznie zwrócił uwagę, że nasz obchód z kurem jest najprawdopodobniej wykolejeniem dawnego obnoszenia innego ptaka. To samo przyjmuje bez wahania W. Klinger, którego zdaniem kur zastąpił u nas jaskółkę, Obok argumentów, jakie na korzyść tych wywodów przytoczyli wspomniani badacze, należy jeszcze uwzględnić, że przy sporządzaniu sztucznego ptaka — powiedzmy jaskółki — względnie przy pokrywaniu go pierzem (co u nas często ina miejsce) ptak ten niejako automatycznie mógł się zamienić w kura, boć przecie o kurze pierze najłatwiej było i jest po wsiach.</p>
+      <p>Jak należałoby przyjąć w myśl powyższego, nie obchód z żywym kogutem, lecz właśnie ze sztucznym byłby pierwotniejszy. Niestety konfiguracja odnośnych zasięgów jest taka, iż na jej podstawie nie da się nic pewnego powiedzieć. Możnaby się więc tylko powołać na fakt, że nieomal wszystkie dawniejsze, i to dość liczne źródła (Kitowicz w XVIII w. , Kolberg, Gloger, »Wisła« i t. d.) mówią — o ile wogóle wchodzą w te szczegóły — o kogucie sztucznym (urobionym z gliny, ciasta, drzewa, dyni lub pakuł). Trudniej jest też w danym związku przypuścić, aby sztuczny kogut miał być »formą szczątkową« żywego, niż założyć, iż z upadkiem zwyczaju wieśniacy — zamiast poświęcać wiele czasu i pracy na sporządzanie ptaka sztucznego — zaczęli się posługiwać kogutem żywym, którego przecież po wsiach zawsze się ma pod ręką. — Oczywiście z chwilą, gdy dawną jaskółkę czy innego skrzydlatego zwiastuna wiosny zastąpił kur, obrządek musiał nabrać specyficznych cech w związku z wierzeniami oraz symboliką, otaczającemi tego domowego ptaka.</p>
+      <p>Jak daleko w kieranku zachodnim sięga zwyczaj chodzenia z kurem, w tej chwili powiedzieć się nie da: zdaje się, że w rdzennych Niemczech i na Łużycach obrządek ten zupełnie nie jest znany. Co do najdalszych wschodnich punktów zasięgu: w Sanockiem i Wileńskiem, to chodzi tu niewątpliwie o przerzuty z zach. Polski (cf. zupełnie identyczny obraz zasięgu »Obchodzenia wsi z drzewkiem etc.«). Przebieranie się parobków za koguty, zwłaszcza o ile występuje w okresie Godów (jak to ma miejsce w p. 4.) lub w zapusty (w Niemczech etc.), zdaje się zupełnie nie należeć do obchodzącego nas obrzędu. Natomiast zasługuje może jeszcze w tym związku na uwzględnienie wiadomość, otrzymana ze wsi Zabłocia (pow. Żywiec), według której chodzono tam »na św. Szczepana, w Nowy Rok« z wypchanym kogutem.</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
