@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
+    <script src="atlas_Moszynski.geojson"></script>
+    <script src="rzeki.geojson"></script>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    Demony (porywające i) odmieniające niemowlęta<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Wierzenie, według którego pewne demony (porywają i) odmieniają niemowlęta, występuje w Europie w dużym zasięgu, choć jednak — bynajmniej nie wszędzie (KLS II, 1, 638 § 521). W Polsce oskarża się o podobne postępowanie przede wszystkim żeńską istotę mityczną zwaną: <i>boginka</i> lub <i>bogina</i> (młrs. <i>bohỳńi</i>, <i>bohỳńa</i>); <i>mamuna</i> a. <i>mamona</i>; <i>sibiela</i>, <i>siubiela</i>, <i>siumiela</i>, <i>sibioła</i>; <i>odmienica</i>, <i>odmianka</i> i t. p.; <i>paniuńcia</i>. Przedostatnia z tych nazw, co do genezy zupełnie przejrzysta, występuje głównie w uderzającym wydłużonym zasięgu na wsch. rubieży rdzennej Polski; przy czym jednak niekiedy słyszymy tam o demonie męskim (<i>odmieniec</i>, sic!). — <i>Sibiela</i> itp. powstała z wykolejonej <i>sybilli</i>. <i>Mamuna</i> wzgl. <i>mamona</i> niewątpliwie nawiązuje w umyśle ludu do słów: <i>mamić</i>, <i>omam</i>, oraz do zdrobniałej postaci wyrazu <i>matka</i>, ale mimo to najprawdopodobniej jest — wbrew E. Bernekerowi a w zgodzie z A. Brücknerem — również pochodzenia obcego. Najciekawsza jest <i>boginka</i>, tym bardziej że obok niej występują też: <i>wieszczyca</i> (p. 33) i <i>czarownica</i> (p. 21, ok. p. 133, pp. 119, 130, ok. p. 47, między pp. 57 a 97), przy czym <i>wieszczyca</i> jest prastarą ogólnosłowiańską nazwą czarownicy (KLS II, 1, 90, 555, 653). Otóż u Morawian, Polaków i na Rusi czarownicy bywają nazywani <i>bogami</i> lub »bożkami« (ib. 714), zaś u Słowaków i Morawian <i>bohyńa</i> znaczy tyleż, co 'czarownica', a u Małorusinów z okolicy Chocimia <i>božyca</i> jest to 'kobieta znająca (znachorka)', Najprawdopodobniej więc nazwa <i>bogina</i>, <i>boginka</i> znaczyła ongiś tyleż, co słowacka i morawska <i>bohyńa</i>, t.j. równała się pierwotnie z wieszczycą i czarownicą (cf. jeszcze ib. odn. 1). Oczywiście »czarownice«, porywające i odmieniające dzieci, należy rozumieć jako istoty półdemoniczne lub nawet jako demony, a nie jako zwykłe śmiertelnice, różniące się od innych ludzi tylko umiejętnością czarowania.</p>
+      <p>Zasiąg <i>boginki-mamuny-sibieli-odmianki</i> jest dość dziwny. Obejmując mn. w. górną połowę dorzecza Wisły oraz Dniestru, wyjąwszy część gór (cf. podobny zasiąg wierzeń o płanetnikach i o zabijaniu przez pioruny demonów, wywodzących się z dusz dzieci), wkracza wąskim językiem na płn.-wsch. Mazowsze, gdzie jeszcze pod samą pruską granicą słyszymy o <i>otniankach</i> zamieniających dzieci (p. 45); w tamtych też gdzieś stronach zasiąg ten nawiązywał zapewne do zasięgu wierzeń litewskich w odmieniające dzieci łaumy (cf. też zach.-białoruskie <i>łojmy</i>: Fed. I, 36). Podobny obraz dość trudno byłoby może zinterpretować inaczej, jak tylko przyjmując, że i na zach. Mazowszu oraz w Wielkopolsce istniały niegdyś identyczne przesądy, lecz uległy całkowitemu lub częściowemu zapomnieniu; w ostatnim wypadku dawna mityczna istota żeńska zostałaby — zupełnie naturalnie — zastąpiona przez złe duchy.</p>
+      <p>Nie jest może nawet wykluczone, że i Pomorze znało ongi tradycje podobne. Tam jednak z czasem wątek porywania i odmiany niemowląt przyłączył się do zespołu wierzeń o niezwykle w owych stronach popularnym <i>kraśnięciu</i> wzgl. <i>kraśniaku</i> czy <i>kraśnoludzie</i>.</p>
+      <p>Kształt zasięgu <i>boginki</i> na płd. Rusi wskazuje, iż na Ruś przybyła ona z zachodu, z Polski, posuwając się, jak tyle innych wytworów, najgęściej zaludnionym szlakiem podolskim. Jak daleko wkroczyła na wschód, jeszcze nie wiemy. W każdym razie zachodniej części rosyjskiego Podola nie jest obca.</p>
+      <p>Śród istot, wyodrębnionych na mapie w grupę »innych«<, mamy — oprócz omówionej już <i>wieszczycy</i> i <i>czarownicy</i> — <i>południcę</i> (p. 28), <i>zmorę</i> (pp. 43, 36, ok. p. 12) wzgl. <i>marę</i> (ok. p. 47), <i>małpę</i> (p. 96, ok. pp. 42, 51), <i>wywielgę</i> (sic! ok. p. 26) etc. Demoniczny charakter obu ostatnich postaci nie jest znany, — W p. 101 nie wymieniają nazwy obchodzącej nas mitycznej istoty, określając ją zaimkiem <i>vonà</i> (t. zn. 'ona'); zaliczono to również do »innych«.</p>
+    </div>
+  </div>
+<br><br>
+    <div id="map"></div>
+
+    <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
+        var map = L.map('map').setView([52.114503, 19.423561], 6);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        //map.addLayer(points);
+
+        var overlays = {"Oryginalna mapa": L.imageOverlay('a3m7.png', [[41.811458340, 12.189136848], [58.937065990, 31.742411529]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
+        L.control.layers(null, overlays).addTo(map);
+    
+    </script>
+    
+    
+    </body>
+    <a href = "atlas.html"><i>Atlas kultury ludowej w Polsce</i> - wykaz map</i></a>
+    <br>
+    <a href = "index.html">Powrót na stronę główną</a>
+    </html>

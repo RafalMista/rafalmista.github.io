@@ -5,26 +5,74 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Belemnit itp. (nazwa oraz interpretacja)
-    <br>
+    Belemnit itp. (nazwa oraz interpretacja)<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Pytanie ankiety brzmiało: »Czy słyszeliście co o podługowatych kamykach, całkiem podobnych do palca? Jak je nazywają?«. — Na znacznym obszarze SW Polski (w mn. w. zwartym zasięgu) lud takich »kamyków« nie zna zupełnie. To samo powtarza się (również w zwartym zasięgu!) w części dorzecza Niemna (pp. 66, 74, 76, 77, 80, 129; w pp. 74, 76 i 77 mają nazwę: <i>strałà</i>, ale stosują ją do przedhistorycznych kamiennych siekierek).</p>
+      <p><i>Stréla</i> (albo <i>perunova</i>, <i>gromova</i> lub <i>božьja stréla</i>) jest to prastare, słowiańskie określenie belemnitów, fulgurytów, przedhistorycznych kamiennych grotów strzał itp. W Polsce przetrwało ono w zasięgu obejmującym część północy i wschód, dość charakterystycznym dla wielu wytworów dawnych wychodzących z użycia. — Termin: <i>prątek</i>, <i>Boży prątek</i>, jest z pewnością nowszego pochodzenia i najprawdopodobniej on to rozbił jednolity dawniej płn.-wschodni zasiąg <i>strzały</i>.</p>
+      <p>Najciekawsza jest niewątpliwie wymowna nazwa: <i>diabli</i> a. <i>czarci palec</i>, inaczej <i>złego paznokieć</i> (p. 45), na Białorusi — <i>čòrtaṷ pàlec</i> a. <i>pazùr</i>. Spotyka się ona głównie wzdłuż płn. kresów Mazowsza oraz wzdłuż białorusko-małoruskiego pogranicza. Na ogół biorąc posiada bardzo zajmujący zasiąg, gdyż poza Polską występuje w identycznych lub pokrewnych postaciach na Litwie (cf. KLS II, I, 623: »palec łaumy«), na sowieckiej Białorusi i na Wielkorusi (wkrs. <i>čòrtov pàlec</i>). W związku z ruskimi nazwami i przesądami (cf. tamże, 623) pozostają też opowiadania Wotiaków i Zyrian o kamiennych palcach, porzucanych niekiedy przez demony (ib.). Jednym słowem, o ile nie uwzględnilibyśmy odosobnionej informaeji z ok. p. 58, mielibyśmy tu przed sobą piękny przykład znanego i skądinąd zasięgu, rozpoczynającego się na płn. rubieży Polski i przez Litwę oraz Białoruś sięgającego ku wschodnim sąsiadom Wielkorusów (cf. m.i. KLSI 119—20, §§ 132, 133). Jednak i na Kaukazie zdają się niemal napewno występować nazwy i wierzenia identyczne (KLS II, 1, 623—4). Z drugiej zaś strony także w płn. powiatach Szwajcarii, w dolnej Lotaryngii oraz tu i ówdzie w Bawarii belemnity bywają nazywane przez tamtejszy lud niemiecki »diablimi palcami« a. »paluchamie« (Hwb. d. d. A. I 1024 i n.). Dalsze badania wykryją może takie same nazwy czy nawiązujące do nich wierzenia również w innych stronach Europy. Ale już dziś można orzec, iż to, co poznano dotychczas, stanowi ostatnie ślady prastarej i niegdyś bardzo rozpowszechnionej interpretacji mitycznej belemnitów itp., gruntownie sprzecznej w stosunku do wierzeń, dopatrujących się w nich strzał miotanych przez bóstwa.</p>
+      <p>Na zach. Białorusi obok <i>czarciego</i> występuje też <i>Boży palec</i>; w pobliżu zaś tych stron na płn.-wsch. Mazowszu: <i>Matki Boskiej paluszek</i> (p. 46). Ostatni termin jest napewno lokalną innowacją; w świetle jednak ogólnych danych podobną innowacją wydaje się być także pierwszy.</p>
+      <p>Tu i ówdzie strzałę nazywają — zwykle obocznie — wprost <i>piorunem</i> (pp. 11, 16, 68, 70, 71, 75) lub <i>gromem</i> (tylko na wschodzie: 68, 85, 102). — Śród nazw »innych« występują: <i>hromovyća</i> (p. 98) i <i>hromnyća</i> (p. 90); <i>skalka</i> (p. 127), <i>skalà</i> (p. 60) i <i>perunòva skàṷka</i> (pp. 55 i 108) oraz <i>głód</i> (p. 116; ludność polska). Dodać należy, że określenia: <i>piorunowy</i>, <i>pieroński</i> itp. spotykamy tylko u Polaków, rdzennych Białorusinów i graniczących z Polakami Małorusinów (pp. 49, 52, 53, między pp. 55 a 100, 58 a 59, 59 między pp. 57 a 96, cf. też Lud VIII 392), natomiast na wschód od pp. wyliczonych w nawiasie: na Polesiu, Wołyniu itd., lud określników bądź wogóle nie dodaje, bądź też — i to częściej — mówi: <i>hromovà strìłka</i> (wyjątkowo: <i>striłà Bòža</i>, p. 58).</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

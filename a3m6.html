@@ -5,26 +5,74 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Człowiek zabity przez piorun
-    <br>
+    Człowiek zabity przez piorun<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>W uderzającej niekonsekwencji z pospolitym u części Słowian przekleństwem: pol. <i>Bodaj cię piorun strzelił!</i> v. <i>trzasł!</i> v. <i>zabił!</i>, błrs. <i>Kab ćaḃè ṕerùn trèsnuũ</i> v. <i>zabiũ</i> v. <i>ũżaũ</i> itd. oraz z wierzeniem w tępienie piorunami złych duchów — w wielu stronach Polski i Białorusi, a zwłaszcza Mało- i Wielkorusi, uważa się człowieka zabitego przez piorun właśnie za szczęśliwego, »sprawiedliwego (t. zn. bezgrzesznego), »niewinnego«. Motywuje się zaś ów pogląd tym, że takiego człowieka <i>Bóg zabił</i> v. <i>zabrał</i>. Dusza uśmierconego w ten sposób nie ma zstępować do piekieł czy do czyśca, lecz idzie wprost do nieba, podobnie jak dusza wojownika zabitego podczas bitwy i kobiety zmarłej w połogu.</p>
+      <p>Mniej lub więcej podobne poglądy dzielą ze Słowianami i niektóre inne ludy, przy czym szczególnie wyjaskrawiają się one u górali zachodniego Kaukazu (cf. KLS I, 1, 489). Genezy powyższych zapatrywań trzeba szukać w tych samych przesłankach, które spowodowały, że np. pożar od gromu uważa się za widomy znak »łaski bożej« (ib.). Do analogicznych wierzeń należy poczytywanie sobie za szczęście (za dowód łaski) porwania dziecka przez orła królewskiego (ob. tamże, 576 odn. 2) itp. We wszystkich podobnych wypadkach sprawcą porwania czy zabójstwa jest istota, doznająca wysokiej wzgl. boskiej czci.</p>
+      <p>Układ zasięgów dwu sprzecznych wersyj, uwidocznionych na mapie, zdaje się wcale wyrażnie wskazywać na większą dawność i znaczniejsze niegdyś rozpowszechnienie poglądu omówionego powyżej; natomiast uważanie człowieka zabitego przez piorun za grzesznika, nieszczęśliwego itp. byłoby zapewne w Polsce zjawiskiem późniejszym, zyskującym w ostatnich czasach — m. i. być może nie bez wpływu podanych wyżej, bardzo pospolitych przekleństw — coraz bardziej na terenie. Jednak ten wniosek trzebaby jeszcze sprawdzić dokładniej.</p>
+      <p>Zajmujące jest, że na obszarach, gdzie występuje wiara w grzeszność człowieka zabitego przez piorun, spotyka się tu i owdzie przekonanie, wedle którego grom zabija nietylko ciało, lecz i duszę ofiary (zanotowano przygodnie w pp. 8, 12, 13, 23, 35 i 44, ale wierzenie to jest najprawdopodobniej daleko pospolitsze).</p>
+      <p>Dodajmy wreszcie, iż zarówno na wschodzie, jak i na zachodzie Polski w obrębie zasięgów obu sprzecznych wersyj dość często słyszymy o ukrywaniu się podczas burzy złych mocy, ściganych przez piorun wzgl. przez Boga, za człowiekiem lub pod nim; w te właśnie moce ma jakoby bić piorun, uśmiercając mimowoli i ludzi (cf. też mapę »Demony i demoniczne dusze zabijane przez piorun« oraz KLS II, 1, 488 i n.).</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
@@ -62,7 +110,7 @@
                 if (feature.properties.a3m6 == 'jest grzeszny, nieszczęśliwy, bezbożny?; piorun zabija ciało i duszę') return layer.setIcon(znacznik32);
                 if (feature.properties.a3m6 == 'jest szczęśliwy; jest szcześliwy, bo go Bóg zabił, zabrał itp.; jest "sprawiedliwy", "niewinny"') return layer.setIcon(znacznik33);
                 if (feature.properties.a3m6 == null) return layer.setIcon(znacznik8);
-            }});
+            }}).addTo(map);
             
         var legend = L.control({position: 'bottomleft'});
         legend.onAdd = function (map) {

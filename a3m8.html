@@ -5,26 +5,75 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Żywioły i istoty zapraszane na wieczerzę wigilijną
-    <br>
+    Żywioły i istoty zapraszane na wieczerzę wigilijną<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Jak już od dość dawna podnieśli nasi (np. L. Krzywicki w r. 1912) i obcy badacze, wieczerza wigilijna Bożego Narodzenia wywodzi się genetycznie od uczty zadusznej w rodzaju białoruskich <i>dziadów</i>. Część wigilijnego jadła pozostawia lud pospolitym niegdyś w Europie zwyczajem dla dusz, a tu i owdzie przetrwało i u nas oraz w bliskim naszym sąsiedztwie zapraszanie dusz do uczty (w pow. rybnickim, gorlickim, brzeżańskim, na Huculszczyźnie, w Mohylowszczyźnie etc.); niekiedy, choć wieśniacy sami nie umieją objaśnić kogo wołają, jednak z treści odnośnych opowiadań możnaby się do pewnego stopnia domyślać, że chodzi o dusze czy duchy.</p>
+      <p>Tak np. w Małym Smerekowie (p. 31a), gdzie do niedawna pewien starszy włościanin, Maciej Sporek, wychodził odwiecznym zwyczajem przed chałupę i wołał przeciągle: »<i>Schodźcie się z obłoków, z potoków wieczerza-àć!!</i>«, opowiadają, iż po tych zaprosinach zjawiły się u niego pewnej wigilii duchy na wieczerzę.</p>
+      <p>Sądząc według danych porównawczej etnografii, wyobrażano sobie u nas ongi powszechnie, że zjednane gościną dusze będą się opiekowały goszczącymi, a w każdym razie nie będą się mściły w ciągu nadchodzącego roku za pominięcie ich i nie ześlą gradów, wiatrów, czy mrozów, ani drapieżnych zwierząt, szkodnego ptactwa i robactwa, chorób etc. Dzięki temu, gdy z biegiem czasu zaduszny charakter wigilijnej wieczerzy począł się zacierać w pamięci ludu, obiekt zaprosin uległ dwojakiemu wykolejeniu. Dusze czy duchy zmarłych zostały zastąpione nie tylko — całkiem naturalnie — przez zupełnie im bliskich obłoczników itp., rządzących gradowymi chmurami, deszczami etc., przez św. Mikołaja, rządzącego wilkami, przez św. Rocha, aniołów, Matkę Boską, Pana Jezusa i samego Boga, lecz z drugiej strony uwaga włościan przesunęła się w kierunku, który ją bezpośrednio zaprzątał: poczęto wołać wprost »szkodne« zwierzęta i potęgi, aby je tym sposobem zjednać. (Przykład: <i>Chodź wilku do obiadu, a cały rok się nie pokazuj</i>. Tresna, pow. Żywiec). Pomostem mógł tu być prastary, znany m. i. i u nas zwyczaj ugaszczania w wigilię B. N. dzikich ptaków (wróbli etc.). Początkowo rozumiano je mianowicie jako ugaszczanie ni to ptaków, ni to dusz, ptak bowiem, według kosmopolitycznych nieomal pojęć, był najpospolitszą postacią, pod którą ukazywała się dusza (cf. KLŚ II, 1, 556 i n. oraz tekst do mapy »Ptak-dusza«); później zapomniano o dusznym charakterze wigilijnego ptactwa, ale pamiętano, że karmi się je i woła m. i. po to, by nie czyniło szkód.</p>
+      <p>W rezultacie przesunięć, mających w różnych stronach różny przebieg, utworzyły się w Polsce dwie prowincje: południowa i płn.-wschodnia. W pierwszej, gdzie — zwłaszcza w Podgórzu — wilki dawały się do niedawna bardzo we znaki, wzywano przede wszystkim te szkodniki. W drugiej, szczególnie gnębionej przez mrozy, — mróz. Nie jest jednak bynajmniej pewne, czy oba te wykolejenia powstały na naszych ziemiach; być może bowiem, że Polska obejmuje tu tylko peryferyczne części ich zasięgów, utworzonych przez fale kulturalne, których punkty wyjścia leżały gdzie indziej. Mróz woła się do obrzędowej wieczerzy także na ogromnych obszarach sowieckiej Biało-, Mało- i Wielkorusi, a z drugiej znów strony dzikie zwierzęta drapieżne stanowią (wraz z Bogiem, zaś niekiedy i Matką Boską) główny przedmiot zaprosin podczas wigilijnej wieczerzy Bułgarów, Serbów, i Chorwatów aż do Dalmatów włącznie (oto przykład inwokacji z zach. Bułgarii: »Przyjdź i ty, wilku, na wieczerzę; a latem niech cię nikt nie widzi: idź w dzikie lasy, do dzikich zwierząt, gdzie kogut nie pieje, ani jagnię nie beczy«).</p>
+      <p>Nie pierwszy to i nie ostatni raz przykarpacka Polska wykaże nam tak ścisły związek z Bałkanami. Dodajmy zaś, że zapraszanie wilka w B. N. poświadcza dla Polski już kazanie anonima z pierwszej połowy w. XV.</p>
+      <p><i>Uwaga</i>. Stykające się bezpośrednio ze sobą na mapie (na płd. zachodnim jej skrawku) sygnatury dla mrozu i wiatru dotyczą jednej wsi (ok. p. 30).</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
@@ -56,7 +105,7 @@
                 if (feature.properties.a3m8 == 'św. Mikołaj') return layer.setIcon(znacznik25);
                 if (feature.properties.a3m8 == "brak tradycji") return layer.setIcon(znacznik6);
                 if (feature.properties.a3m8 == null) return layer.setIcon(znacznik8);
-            }});
+            }}).addTo(map);
             
         var legend = L.control({position: 'bottomleft'});
         legend.onAdd = function (map) {

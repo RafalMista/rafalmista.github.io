@@ -5,26 +5,74 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Nazwa Pasa Oriona (wzgl. Oriona)
-    <br>
+    Nazwa Pasa Oriona (wzgl. Oriona)<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Pytanie ankiety, dotyczące Pasa Oriona, brzmiało: »Jak nazywacie 3 jasne gwiazdy, co świecą rzędem obok siebie, a koło nich blisko jest jeszcze kilka gwiazd?« — Mapa, sporządzona na podstawie otrzymanych odpowiedzi oraz innych danych (ob. niżej) stwierdza, iź znajomość Pasa Oriona jest u nas zupełnie powszechna, a najpospolitsze jego nazwy wywodzą się od nazwy kosiarza lub kosy. Ostatni wypadek jest zresztą rzadszy: <i>kosy</i> jako 'Pas Oriona” spotykamy tylko na SW Polski i na zachodnim skrawku Poznańskiego. Powszechniej słyszymy o <i>koścach</i>, <i>kośnikach</i> i <i>kosiarzach</i>. Z tych trzech postaci jednej i tej samej nazwy najstarsza jest pierwsza (cf. stary, rdzennie słowiański wyraz: <i>kosьcь</i> 'kosiarz'), powtarzająca się też nad Adriatykiem (słoweń. <i>kosci</i> 'Orion', dosłownie 'kosiarze'; serb.-chorw. <i>kosce</i> 'ts'). Najmłodszą formą na terytorium Polski rdzennej jest, jak wyraźnie wynika z układn zasięgów, postać <i>kosiarze</i>. Najprawdopodobniej lud polski zapożyczył ją (wraz z odpowiednią formą nazwy dla kosiarza-człowieka) od swych płd.-wschodnich sąsiadów (poczem już z rdzennej Polski zaniesiono ją m. i. do okolic Wilna). Poza Polską językową appellativum to panuje na południowej rubieży Białorusi oraz na znacznym obszarze Mało- i — może — Wielkorusi (ale stamtąd brak nam bliższych danych co do jego zasięgu, cf. KLS II, 1, 36).</p>
+      <p>Nazwę Pasa Oriona, powtarzającą nazwę kosy, posiadają nietylko płd.-zachodni Polacy, lecz i inne ludy Europy; mianowicie z jednej strony — Czesi, płd. Niemcy i płn. Włosi w Alpach (ob. Zft f. Volkskunde XLIV 62 i n.), z drugiej — Finowie-Suomi (cf. KLS II, 1, 37). Część zresztą płd. Niemców zwie też ów Pas kosiarzami (<i>drei Mähder</i>), podobnie jak — oprócz Słowian — część Litwinów.</p>
+      <p>Z nazw zaliczonych na mapie do »innych« wymieniamy wszystkie: pol. <i>sierp</i> (p. 21, oboczna); błrs. <i>karòmysło</i> (między pp. 63 a 78, oboczna), <i>karòmyśełko</i> (p. 16, oboczna), <i>kreśełca P. Jezusa</i> (między pp. 72 a 75), młrs. <i>česnyj chrest</i> (p. 84), <i>divčyna vodu nese</i> (p. 102, oboczna).</p>
+      <p>W obrębie zasięgu <i>kos</i> zdają się też występować np. w bocheńskim, nowosądeckim i gorlickim (ok. pp. 122, 109, 130) wykolejone z tamtych <i>kłosy</i> (<= <i>kṷosy</i> = <i>kosy</i>). Nazwy: <i>kosiorki</i>, spotykającej się w p. 54 (jako oboczna) oraz ok. p. 42, nie uwzględniliśmy zupełnie, jak również — niepewnej informacji o występowaniu <i>kosiarzy</i> między pp. ll a 12 w Poznańskiem.</p>
+      <p>Mimochodem warto zaznaczyć, że obok 3 gwiazd Orionowego Pasa wyróżnia też lud jakieś inne (3) gwiazdy pobliskie, również w rząd ułożone; stosuje zaś do nich bądź tę samą nazwę, co do Pasa (np. u Białorusinów z nad jez. Narocz <i>kascỳ</i> to są »3 i jeszcze 3 gwiazdy«, u Mazurów spod Makowa <i>kośniki</i> liczą 6 gwiazd) bądź też obdarza je nazwą osobną (<i>niesiarze</i>, <i>grabiarki</i> etc.).</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 

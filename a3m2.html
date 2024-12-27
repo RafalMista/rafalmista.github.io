@@ -5,26 +5,77 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Droga Mleczna (nazwa wzgl. interpretacja)
-    <br>
+    Droga Mleczna (nazwa wzgl. interpretacja)<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Powyższa mapa jest zajmująca przede wszystkim z tego względu, że wyraźnie nawiązuje do wykrytego przeze mnie, interesującego etnogeograficznego podziału Polski na dwie prowincje: płn.-wschodnią i płd.-zachodnią, występującego niekiedy przy badaniach nad zasięgami wytworów ludowej kultury (ob. Ziemia XII 163 i n.).</p>
+      <p>Poza Polską <i>ptasza itp. droga</i> występuje jako nazwa Drogi Mlecznej z jednej strony na zachodzie: u Łużyczan (<i>teškowa [<= ptaškowa] droga</i>), a z drugiej na wschodzie: u wschodnich Białorusinów, Litwinów (<i>paũkszcziũ kẽlias</i>), Łotyszów (<i>putnu cel'š</i>), Estów, Finów (<i>linnunrata</i>) u części Wielkorusów (<i>gusinaia doroga</i>), u Wotiaków, u Kirgizów... Co do tego, jak nasi włościanie rozumieją wspomnianą nazwę, ob. KLS II, 1, 63.</p>
+      <p>Na Litwie pas galaktyczny uchodzi (obocznie) za drogę dusz (Lud II 271) a ten sam pogląd spotykamy również w wielu okolicach Polski i w innych stronach Europy (np. w Portugalii) oraz w krajach egzotycznych (np. pospolicie u Indian Ameryki Północnej i części Południowej).</p>
+      <p>Według pokrewnej interpretacji interesujące nas zjawisko niebieskie tłumaczone bywało od dawna u niektórych ludów jako droga herosów czy bóstw. Do tego rodzaju poglądów należą w zasadzie i nasze: <i>droga świętych</i>, <i>droga po której chodzą święci</i> (p. 29, ok. pp. 133, 30, 55, między pp. 108 a 128, 59 a 128, ok. pp. 42, 49), <i>droga po której św. Eliasz jeździ na swym wozie</i> (ok. pp. 133, 59, 63, między pp. 88 a 92), <i>droga Pana Jezusa</i>, <i>Bòža doròha</i> itp.; ale oczywiście wszystkie te wersje mogły powstać całkiem niezależnie od analogicznych dawnych.</p>
+      <p>Wreszcie w nowszych czasach (przypuszczalnie od średniowiecza) szczególnie rozpowszechniły się też appellativa w rodzaju: <i>droga do Rzymu</i>, <i>droga do Jerozolimy</i> itd. Poza Polską panują one m. i. na ogromnych obszarach Wielko- i Małorusi, Czechosłowacji, Słowenii, Austrii, Szwajcarii itd.</p>
+      <p>Gdybyśmy mieli większą ilość danych, możnaby wyznaczyć na mapie poszczególne zasięgi takich nazw, jak <i>droga do Krakowa</i>, <i>droga do Kalwarii</i>, <i>Częstochowy</i>, <i>Poczajowa</i> itp. Mogłyby one dać wcale ciekawy obraz popularności pewnych miast; tu jednak z konieczności musimy się ograniczyć do zaznaczenia, iż <i>Częstochowa</i> występuje w pp. 10, 22, 25, 100, 43, 37, 26, 21, 20, 27, 115 i około pp. 25, 114, 51, <i>Kalwaria</i> w pp. 115, 19, <i>Kraków</i> w pp. 27, 36, ok. pp. 35, 40, <i>Warszawa</i> w p. 36, ok. p. 80, <i>Mogielnica</i> (góra) w p. 120, <i>Poczajów</i> w p. 88, <i>Kijów</i> w p. 90, <i>Krym</i> ok. p. 90, <i>Rzym</i> w pp. 15, 115, 114, 113, 18, 111, 124, 30, 33, między pp. 110 a 30, ok. pp. 133, 30, 126, 124, 125, 33, 130, 55, <i>Jerozolima</i> w pp. 124, 110, 60, 102, między pp. 110 a 30, ok. pp 133, 33, <i>Betleem</i> ok. p. 121.</p>
+      <p>Spotykana dziś po wsiach <i>mleczna droga</i> (błrs. <i>mlèčna</i> a. <i>mlèčnaia daròha</i>) jest wzięta od inteligencji. Jak widać z mapy, małoruski lud jej prawie nie zna; podano ją co prawda m. i. z ok. p. 90 oraz z p. 118, ale w ostatnim wypadku w brzmieniu polskim: <i>mleczna droga</i>. — Co do pospolitego terminu: <i>droga</i>, <i>doròha</i>, to trzeba jeszcze zaznaczyć, iż niekiedy bywa on uzupełniany dodatkowymi określnikami, np.: <i>droga przez niebo</i>, <i>ńeḃèsnaja doróha</i>, <i>droga do pogody</i> albo <i>na pogodę</i> itp.</p>
+      <p>Z nazw, uwzględnionych na mapie jako »inne«, wymieniamy: <i>zopyra</i> (ok. p. 133), <i>zapyry</i> (ok. p. 31); <i>pomoda</i> (?, z 2 miejsc ok. p. 122); <i>źḿej</i> (p. 15); <i>biała droga</i> (ok. pp. 133, 30, 49), <i>mroźna dr.</i> (ok. p. 133), <i>księżycowa dr.</i> albo <i>dr. księżyca</i> (ok. pp. 133, 51), <i>słoneczkowa dr.</i> (»mówią, że słoneczkowa matka tamtędy jeździła« i po niej ten znak został, p. 131), <i>droga do raju</i> (ok. p. 20), <i>čumackyj šlach</i> (p. 87, ok. p. 90).</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

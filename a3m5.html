@@ -5,26 +5,71 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> 
     <script src="atlas_Moszynski.geojson"></script>
     <script src="rzeki.geojson"></script>
-<style>
-    body {
-          font-family: sans-serif;
-      }
-    #map {height: 720px;}
-    .legend {
-        background-color: white;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 10px;
-        font-size: 15px;
-    }
-</style>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;
+                z-index:1;}
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+            }
+    
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+        .legend {
+            background-color: white;
+            line-height: 30px;
+            padding-left: 5px;
+            padding-right: 10px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    Demony i demoniczne dusze zabijane przez piorun
-    <br>
+    Demony i demoniczne dusze zabijane przez piorun<br>
+    <button id="instrukcja_przycisk">Opis mapy wg Moszyńskiego</button>
+<div id="instrukcja" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Według wierzeń ogromnie rozpowszechnionych w Europie i gdzie indziej piorun bije w złe duchy i w ten sposób je niszczy. Do złych mocy, zabijanych przez grom, należą m. i. demony, powstałe z dusz poronionych płodów, niemowląt zabitych niechcący lub umyślnie przez matkę, dzieci zmarłych bez chrztu itp. (cf. KLS II, 1, 681 i n.). Jak widać z mapy, demony takie — w południowej Polsce nazywane zwykle <i>latawcami</i> — wysunęły się na znacznym obszarze tego kraju na samo czoło istot, gromionyeh przez pioruny; według bowiem tamtejszych przesądów grom właśnie te istoty zabija. Zwykle opowiada się przy tym, iż ukazują się one w postaci ptaków (cf. mapę: »Ptak- dusza«). Typowy więc obraz południowo-polski jest taki: podczas burzy zjawiają się czarne lub bure ptaki, latające z piskiem czy kwileniem, a za nimi gonią piorunowe strzały. Biją zresztą gromy także w miejsca, gdzie leży ciało poronionego płodu lub zamordowanego dziecka (ok. pp. 31, 133, pp. 133, 39, 128, 92, 101).</p>
+      <p>Bardzo pospolicie słyszymy o kryciu się czartów i innych złych mocy przed gromem (m. i. — za człowieka lub pod niego). Tu i owdzie wreszcie notowano też motyw, głoszący, że złe drażni Boga wzgl. moce niebieskie (piorun itp.) nieprzyzwoitymi gestami lub słowami i wtedy właśnie grom weń bije (p. 19,p. 126, ok p. 109: w. Zabrzeż pow. N. Sącz, N od p. 96: w. Wólka pow. Brzeżany, p. 118, ok. p. 58: w. Zaborze pow. Rawa Ruska); to samo znane jest 1 poza granicami Polski (cf. np. moje: » Polesie wschodnie« 158).</p>
+    </div>
+  </div>
+<br><br>
     <div id="map"></div>
+
     <script>
+        // Opis
+    var modal = document.getElementById("instrukcja");
+    var przycisk = document.getElementById("instrukcja_przycisk");
+    var span = document.getElementsByClassName("close")[0];
+    przycisk.onclick = function() {modal.style.display = "block";}
+    span.onclick = function() {modal.style.display = "none";}
+    window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}
+
+        // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
         var znacznik6 = L.icon({iconUrl: 'znacznik6.png', iconSize: [20,20]}); 
