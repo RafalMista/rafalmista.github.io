@@ -50,9 +50,11 @@ function wyszukaj() {
         if (wzor.test(feature.properties.uwagi)) return true;
     }
     
-    document.getElementById("wyniki").innerHTML = "<tr><th>tom</th><th>nr</th><th>uwagi</th><th>lokalizacja (wg Kolberga)</th></tr>";
+    document.getElementById("wyniki").innerHTML = "<tr><th>tom</th><th>nr</th><th>uwagi</th><th>lokalizacja (wg Kolberga)</th><th>nagranie</th></tr>";
     wyniki.forEach(function(entry) {
-        document.getElementById("wyniki").innerHTML += "<tr><td>" + entry.tom + "</td><td>" + entry.nr  + "</td><td>" + entry.uwagi + "</td><td>" + entry.lokalizacja + "</td></tr>";
+        var stronawww = "<a href =" + entry.www +" target = '_blank'>Posłuchaj</a>";
+        if (entry.www === "") {stronawww = ""};
+        document.getElementById("wyniki").innerHTML += "<tr><td>" + entry.tom + "</td><td>" + entry.nr  + "</td><td>" + entry.uwagi + "</td><td>" + entry.lokalizacja + "</td><td>" + stronawww + "</td></tr>";
     });
     var points = L.geoJSON(wyniki_mapa, 
     {pointToLayer: function(feature, latlng)
