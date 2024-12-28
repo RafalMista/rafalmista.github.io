@@ -1,0 +1,70 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="dwok_uwagi_mapa.geojson"></script>
+    <script  type="text/javascript" src="dwok_uwagi.js"></script>
+    <style>
+        body {
+                font-family: sans-serif;
+            }
+            #map {height: 720px;}
+    </style>
+</head>
+<body>
+<b>Wyszukiwarka melodii według uwag występujących przy zapisach nutowych</b>
+<br>
+<br>
+<button popovertarget="PL"><img src="../flagi/PL.svg" width="50" height="30" style="float:right"/></button>
+<button popovertarget="LT"><img src="../flagi/LT.svg" width="50" height="30" style="float:right"/></button>
+<button popovertarget="BY"><img src="../flagi/BY.svg" width="50" height="30" style="float:right"/></button>
+<button popovertarget="UA"><img src="../flagi/UA.svg" width="50" height="30" style="float:right"/></button>
+<button popovertarget="EN"><img src="../flagi/EN.svg" width="50" height="30" style="float:right"/></button>
+<div popover id="PL" style="inset: unset; position: absolute; top: 120px">Części zapisów nutowych towarzyszą "uwagi" (np. o gatunku tanecznym lub instrumencie, na którym melodia była wykonywana). Poniższa wyszukiwarka pozwala wyszukiwać takie zapisy. Wyniki prezentują na mapie melodie z przypisanymi miejscowościami. Wyszukiwarka akceptuje wyrażenia regularne.</div>
+<div popover id="LT" style="inset: unset; position: absolute; top: 120px">Kai kurias natas lydi „natos“ (pvz., apie šokio žanrą arba instrumentą, kuriuo buvo atliekama melodija). Žemiau esanti paieškos sistema leidžia ieškoti tokių įrašų. Rezultatai pateikiami žemėlapyje su melodijomis su priskirtais miestais. Paieškos variklis priima reguliariąsias išraiškas.</div>
+<div popover id="BY" style="inset: unset; position: absolute; top: 120px">Частка нот суправаджаецца «нотамі» (напрыклад, пра танцавальны жанр або інструмент, на якім выконвалася мелодыя). Пошукавая сістэма ніжэй дазваляе шукаць такія запісы. Вынікі прадстаўлены на карце з мелодыямі з прыпісанымі мясцовасцамі. Пошукавая сістэма прымае рэгулярныя выразы.</div>
+<div popover id="UA" style="inset: unset; position: absolute; top: 120px">Деякі ноти супроводжуються «нотами» (наприклад, про танцювальний жанр чи інструмент, на якому виконувалася мелодія). Пошукова система нижче дозволяє шукати такі записи. Результати представлені на карті з мелодіями з приписаними містами. Пошукова система приймає регулярні вирази.</div>
+<div popover id="EN" style="inset: unset; position: absolute; top: 120px">Some of tunes are accompanied by "notes" (e.g. about the dance genre or the instrument on which the melody was performed). The search engine below allows you to search for such records. The results are presented on a map with melodies with assigned towns. The search engine accepts regular expressions.</div>
+<br>
+<br>
+<p>Wyszukiwana uwaga:<input type="text" id="wyszukiwarka" value="mazur" /></p>
+<p><button type="przycisk" onclick="wyszukaj()">Wyszukaj</button></p>
+<table id="wyniki"></table>
+<div id="map"></div>
+<script>
+
+var map = L.map('map').setView([52.114503, 19.423561], 6);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+var warstwa = L.layerGroup().addTo(map);
+
+function wyszukaj() {
+    warstwa.clearLayers();
+    var wyniki = uwagi.filter(d => {
+            var wzor = new RegExp(document.getElementById("wyszukiwarka").value,'i');
+            if (wzor.test(d.uwagi)) return true;});
+    var wyniki_mapa = L.geoJson(uwagi_mapa, {filter: szukaj}).toGeoJSON();
+    function szukaj(feature) {
+        var wzor = new RegExp(document.getElementById("wyszukiwarka").value,'i');
+        if (wzor.test(feature.properties.uwagi)) return true;
+    }
+    
+    document.getElementById("wyniki").innerHTML = "<tr><th>tom</th><th>nr</th><th>uwagi</th><th>lokalizacja (wg Kolberga)</th></tr>";
+    wyniki.forEach(function(entry) {
+        document.getElementById("wyniki").innerHTML += "<tr><td>" + entry.tom + "</td><td>" + entry.nr  + "</td><td>" + entry.uwagi + "</td><td>" + entry.lokalizacja + "</td></tr>";
+    });
+    var points = L.geoJSON(wyniki_mapa, 
+    {pointToLayer: function(feature, latlng)
+        {return new L.circleMarker(latlng, {radius: 5, color: 'navy'});}
+    }).addTo(warstwa); 
+    map.addLayer(warstwa); 
+}
+      
+
+</script>
+</body>
+<br>
+<br>
+<a href = "index.html">Powrót na stronę główną</a>
+</html>
