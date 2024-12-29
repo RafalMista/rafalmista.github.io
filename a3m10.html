@@ -74,13 +74,58 @@
         // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
+        var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]});
+        var znacznik6 = L.icon({iconUrl: 'znacznik6.png', iconSize: [20,20]});
+        var znacznik7 = L.icon({iconUrl: 'znacznik7.png', iconSize: [20,20]});
+        var znacznik8 = L.icon({iconUrl: 'znacznik8.png', iconSize: [20,20]}); 
+        var znacznik15 = L.icon({iconUrl: 'znacznik15.png', iconSize: [20,20]});
+        var znacznik16 = L.icon({iconUrl: 'znacznik16.png', iconSize: [20,20]});
+        var znacznik34 = L.icon({iconUrl: 'znacznik34.png', iconSize: [20,20]});
+        var znacznik54 = L.icon({iconUrl: 'znacznik54.png', iconSize: [20,20]});
+        var znacznik101 = L.icon({iconUrl: 'znacznik101.png', iconSize: [20,20]});
+        var znacznik102 = L.icon({iconUrl: 'znacznik102.png', iconSize: [20,20]});
+        var znacznik103 = L.icon({iconUrl: 'znacznik103.png', iconSize: [20,20]});
+        var znacznik104 = L.icon({iconUrl: 'znacznik104.png', iconSize: [20,20]});
+        var znacznik105 = L.icon({iconUrl: 'znacznik105.png', iconSize: [20,20]});
+        var znacznik106 = L.icon({iconUrl: 'znacznik106.png', iconSize: [20,20]});
+
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        //map.addLayer(points);
+        var points = L.geoJSON(atlas,{onEachFeature: function(feature,layer) 
+            {layer.bindPopup(feature.properties.ID + ' ' + feature.properties.Nazwa);
+                if (feature.properties.a3m10 == "dudy, na Młrusi dùda, dùtka, dutky, na Błrusi dudà") return layer.setIcon(znacznik1);
+                if (feature.properties.a3m10 == "dudelzak") return layer.setIcon(znacznik54);
+                if (feature.properties.a3m10 == "kozioł") return layer.setIcon(znacznik102);
+                if (feature.properties.a3m10 == "koza, na Młrusi kozà") return layer.setIcon(znacznik34);
+                if (feature.properties.a3m10 == 'gajdy') return layer.setIcon(znacznik101);
+                if (feature.properties.a3m10 == 'inne') return layer.setIcon(znacznik16);
+                if (feature.properties.a3m10 == 'inne wątpliwe (np. "torba")') return layer.setIcon(znacznik103);
+                if (feature.properties.a3m10 == 'nieznane') return layer.setIcon(znacznik6);
+                if (feature.properties.a3m10 == 'brak nazwy') return layer.setIcon(znacznik7);
+                if (feature.properties.a3m10 == "brak tradycji") return layer.setIcon(znacznik6);
+                if (feature.properties.a3m10 == "gajdy; dudy, na Młrusi dùda, dùtka, dutky, na Błrusi dudà") return layer.setIcon(znacznik104);
+                if (feature.properties.a3m10 == "dudy, na Młrusi dùda, dùtka, dutky, na Błrusi dudà; koza, na Młrusi kozà") return layer.setIcon(znacznik105);
+                if (feature.properties.a3m10 == "gajdy; koza, na Młrusi kozà") return layer.setIcon(znacznik106);
+                if (feature.properties.a3m10 == null) return layer.setIcon(znacznik8);
+            }}).addTo(map);
+            
+        var legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'), 
+                kategorie = ["dudy, na Młrusi dùda, dùtka, dutky, na Błrusi dudà","dudelzak","kozioł","koza, na Młrusi kozà","gajdy","inne",'inne wątpliwe (np. "torba")',"nieznane","brak nazwy"], 
+                labels = ["znacznik1.png","znacznik54.png","znacznik15.png","znacznik102.png","znacznik34.png","znacznik101.png","znacznik16.png","znacznik103.png","znacznik6.png","znacznik7.png"];
+            for (var i = 0; i < kategorie.length; i++) {
+                div.innerHTML += (" <img src="+ labels[i] +" height='20' width='20'>") + " " + kategorie[i] +'<br>';
+            }
+            return div;
+        };
+        legend.addTo(map);
 
-        var overlays = {"Oryginalna mapa": L.imageOverlay('a3m10.png', [[42.021253199, 12.496936256], [59.020892444, 31.925095393]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
+        map.addLayer(points);
+
+        var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a3m10.png', [[42.021253199, 12.496936256], [59.020892444, 31.925095393]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);
     
     </script>
