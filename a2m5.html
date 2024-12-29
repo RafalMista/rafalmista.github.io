@@ -116,7 +116,7 @@
 
         map.addLayer(points);
 
-        var overlays = {"Oryginalna mapa": L.imageOverlay('a2m5.png', [[41.869202711, 12.176615359], [59.003114082, 31.617771107]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
+        var overlays = {"Interpretacja": points,"Oryginalna mapa": L.imageOverlay('a2m5.png', [[41.869202711, 12.176615359], [59.003114082, 31.617771107]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);
     
     </script>
