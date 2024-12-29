@@ -73,11 +73,48 @@
         // Mapa
         var map = L.map('map').setView([52.114503, 19.423561], 6);
 
+        var znacznik1 = L.icon({iconUrl: 'znacznik1.png', iconSize: [20,20]}); 
+        var znacznik6 = L.icon({iconUrl: 'znacznik6.png', iconSize: [20,20]});
+        var znacznik7 = L.icon({iconUrl: 'znacznik7.png', iconSize: [20,20]});
+        var znacznik8 = L.icon({iconUrl: 'znacznik8.png', iconSize: [20,20]}); 
+        var znacznik15 = L.icon({iconUrl: 'znacznik15.png', iconSize: [20,20]});
+        var znacznik16 = L.icon({iconUrl: 'znacznik16.png', iconSize: [20,20]});
+        var znacznik94 = L.icon({iconUrl: 'znacznik94.png', iconSize: [20,20]});
+        var znacznik95 = L.icon({iconUrl: 'znacznik95.png', iconSize: [20,20]});
+        var znacznik96 = L.icon({iconUrl: 'znacznik96.png', iconSize: [20,20]});
+        var znacznik97 = L.icon({iconUrl: 'znacznik97.png', iconSize: [20,20]});
+
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        //map.addLayer(points);
+        var points = L.geoJSON(atlas,{onEachFeature: function(feature,layer) 
+            {layer.bindPopup(feature.properties.ID + ' ' + feature.properties.Nazwa);
+                if (feature.properties.a2m5 == "o doli: zdrowiu, długości życia itp.") return layer.setIcon(znacznik1);
+                if (feature.properties.a2m5 == "o doli: zamążpójściu") return layer.setIcon(znacznik94);
+                if (feature.properties.a2m5 == "o suszy, dobrym roku") return layer.setIcon(znacznik95);
+                if (feature.properties.a2m5 == "ślady wróżby") return layer.setIcon(znacznik15);
+                if (feature.properties.a2m5 == "tradycji brak") return layer.setIcon(znacznik6);
+                if (feature.properties.a2m5 == "brak odpowiedzi lub odpowiedź niejasna") return layer.setIcon(znacznik7);
+                if (feature.properties.a2m5 == "ślady wróżby?") return layer.setIcon(znacznik16);
+                if (feature.properties.a2m5 == "o doli: zdrowiu, długości życia itp.; o doli: zamążpójściu") return layer.setIcon(znacznik96);
+                if (feature.properties.a2m5 == "o suszy, dobrym roku?") return layer.setIcon(znacznik97);
+                if (feature.properties.a2m5 == null) return layer.setIcon(znacznik8);
+            }}).addTo(map);
+            
+        var legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'), 
+                kategorie = ["o doli: zdrowiu, długości życia itp.", "o doli: zamążpójściu", "o suszy, dobrym roku", "ślady wróżby", "tradycji brak", "brak odpowiedzi lub odpowiedź niejasna"], 
+                labels = ["znacznik1.png","znacznik94.png","znacznik95.png","znacznik15.png","znacznik6.png", "znacznik7.png"];
+            for (var i = 0; i < kategorie.length; i++) {
+                div.innerHTML += (" <img src="+ labels[i] +" height='20' width='20'>") + " " + kategorie[i] +'<br>';
+            }
+            return div;
+        };
+        legend.addTo(map);
+
+        map.addLayer(points);
 
         var overlays = {"Oryginalna mapa": L.imageOverlay('a2m5.png', [[41.869202711, 12.176615359], [59.003114082, 31.617771107]]), "Rozsiedlenie ludności polskiej wg Romera": L.imageOverlay('romer.png', [[44.647131415, 11.715605637], [57.994615381, 37.551994292]]), "Mapa gwar języka białoruskiego wg Karskiego": L.imageOverlay('karski.png', [[50.895598437, 21.875970666], [57.096826357, 35.127293953]]),"Główne rzeki": L.geoJSON(rzeki)};
         L.control.layers(null, overlays).addTo(map);
